@@ -4,9 +4,12 @@ project:
   test_size: 0.20
 
 paths:
+  source_data: data/source/athletes.zip
   raw_data: data/raw/athletes.csv
   processed_data: data/processed/athletes_processed.parquet
   labels: data/processed/athlete_labels.parquet
+  validation_reports: reports/validation
+  figures: reports/figures
 
 feature_store:
   repository: feature_repo

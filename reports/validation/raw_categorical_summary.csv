@@ -1,0 +1,12 @@
+column,unique_count,missing_count,most_frequent_value,most_frequent_count
+name,306752,91896,nan,91896
+affiliate,9778,181090,nan,181090
+team,4532,267846,nan,267846
+schedule,134,325131,nan,325131
+experience,84,318070,nan,318070
+train,83,317175,nan,317175
+eat,47,329074,nan,329074
+background,43,324061,nan,324061
+howlong,30,313800,nan,313800
+region,17,171744,nan,171744
+gender,3,91896,Male,194926

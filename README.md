@@ -1,4 +1,3 @@
-cat > README.md <<'EOF'
 # ADSP 31021 Assignment 2 — Feature Store
 
 ## Project Overview

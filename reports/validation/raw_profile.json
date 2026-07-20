@@ -1,0 +1,28 @@
+{
+  "rows": 423006,
+  "columns": 27,
+  "memory_mb": 287.12,
+  "duplicate_rows": 2,
+  "total_missing_values": 7643954,
+  "missing_cell_percentage": 66.93,
+  "athlete_id_missing": 3,
+  "athlete_id_unique": 423003,
+  "duplicate_athlete_id_records": 0,
+  "required_columns": [
+    "age",
+    "athlete_id",
+    "background",
+    "backsq",
+    "candj",
+    "deadlift",
+    "eat",
+    "experience",
+    "gender",
+    "height",
+    "howlong",
+    "region",
+    "schedule",
+    "snatch",
+    "weight"
+  ]
+}
