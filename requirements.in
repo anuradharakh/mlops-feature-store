@@ -1,0 +1,14 @@
+dvc
+feast
+jinja2
+markdown
+matplotlib
+mlflow
+numpy
+pandas
+pyarrow
+python-dotenv
+pyyaml
+ruff
+scikit-learn
+pytest

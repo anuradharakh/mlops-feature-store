@@ -1,0 +1,19 @@
+project:
+  name: mlops-feature-store
+  random_seed: 42
+  test_size: 0.20
+
+paths:
+  raw_data: data/raw/athletes.csv
+  processed_data: data/processed/athletes_processed.parquet
+  labels: data/processed/athlete_labels.parquet
+
+feature_store:
+  repository: feature_repo
+  entity_name: athlete
+  entity_key: athlete_id
+  timestamp_column: event_timestamp
+
+model:
+  algorithm: RandomForestRegressor
+  target: total_lift
