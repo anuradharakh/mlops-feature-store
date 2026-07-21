@@ -20,3 +20,74 @@ feature_store:
 model:
   algorithm: RandomForestRegressor
   target: total_lift
+
+preprocessing:
+  identifier_column: athlete_id
+  source_timestamp_column: retrieved_datetime
+  event_timestamp_column: event_timestamp
+
+  target_components:
+    - deadlift
+    - candj
+    - snatch
+    - backsq
+  
+  target_sentinel_values:
+    - 1
+
+  numeric_columns:
+    - athlete_id
+    - age
+    - weight
+    - height
+    - deadlift
+    - candj
+    - snatch
+    - backsq
+
+  categorical_columns:
+    - gender
+    - region
+    - howlong
+    - eat
+    - background
+    - experience
+    - schedule
+
+  invalid_response_values:
+    - "Decline to answer|"
+    - "Decline to answer"
+    - ""
+    - "NA"
+    - "N/A"
+    - "null"
+    - "None"
+
+  plausible_ranges:
+    age:
+      min: 14
+      max: 100
+
+    weight:
+      min: 50
+      max: 700
+
+    height:
+      min: 36
+      max: 96
+
+    deadlift:
+      min: 1
+      max: 1105
+
+    candj:
+      min: 1
+      max: 395
+
+    snatch:
+      min: 1
+      max: 496
+
+    backsq:
+      min: 1
+      max: 1069

@@ -95,8 +95,53 @@ Completed.
 
 ## Phase 3 — Preprocessing and Label Construction
 
-To be completed.
+### Objective
 
+Create a deterministic processed dataset, Feast-compatible entity keys,
+event timestamps, and a regression label while preventing target leakage.
+
+### Processing decisions
+
+- `athlete_id` is retained as the Feast entity key.
+- The original retrieval timestamp is used when available.
+- A deterministic fallback timestamp is generated for missing timestamps.
+- Invalid survey responses are converted to missing values.
+- Numerical values are converted using safe coercion.
+- Implausible numerical values are replaced with missing values.
+- Records missing any target component are excluded.
+- Duplicate athlete records retain the latest observation.
+- Missing predictor values are retained for training-only imputation.
+
+### Target definition
+
+`total_lift` is calculated as:
+
+```text
+deadlift + candj + snatch + backsq
+```
+
+### Target sentinel-value correction
+
+Exploratory validation identified repeated lift-component values of `1`,
+including records where all four lift components were equal to `1`. This
+pattern was interpreted as a source-system placeholder rather than a valid
+measurement.
+
+The value `1` was therefore configured as a sentinel value for `deadlift`,
+`candj`, `snatch`, and `backsq`. The preprocessing pipeline replaced 135
+sentinel component values with missing values. Because multiple sentinel
+values occurred within some records, this resulted in 37 additional athlete
+records being excluded from label construction.
+
+After correction:
+
+- Processed rows: 81,707
+- Label rows: 81,707
+- Sentinel values remaining: 0
+- Total-lift range: 8 to 2,367
+
+A broad lower-target cutoff was intentionally avoided to preserve potentially
+valid beginner-athlete records.
 ---
 
 ## Phase 4 — Feature Version 1

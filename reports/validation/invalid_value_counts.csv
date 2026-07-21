@@ -1,0 +1,8 @@
+column,minimum_allowed,maximum_allowed,invalid_value_count
+age,14.0,100.0,11
+weight,50.0,700.0,128
+height,36.0,96.0,1670
+deadlift,1.0,1105.0,3718
+candj,1.0,395.0,3491
+snatch,1.0,496.0,3365
+backsq,1.0,1069.0,3539

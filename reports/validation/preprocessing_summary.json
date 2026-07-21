@@ -1,0 +1,24 @@
+{
+  "initial_rows": 423006,
+  "missing_identifier_rows_removed": 3,
+  "duplicate_entity_rows_removed": 0,
+  "missing_or_invalid_target_rows_removed": 341296,
+  "processed_rows": 81707,
+  "label_rows": 81707,
+  "processed_columns": 29,
+  "target_sentinel_values": [
+    1
+  ],
+  "target_sentinel_values_replaced": 135,
+  "total_lift_min": 8.0,
+  "total_lift_max": 2367.0,
+  "total_lift_mean": 985.455,
+  "total_lift_median": 1000.0,
+  "remaining_missing_predictor_values": 677785,
+  "target_components_excluded_from_features": [
+    "deadlift",
+    "candj",
+    "snatch",
+    "backsq"
+  ]
+}

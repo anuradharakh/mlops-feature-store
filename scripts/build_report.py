@@ -4,7 +4,6 @@ from pathlib import Path
 
 import markdown
 
-
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 MARKDOWN_PATH = PROJECT_ROOT / "docs" / "assignment_2_rollout.md"
 HTML_PATH = PROJECT_ROOT / "docs" / "assignment_2_rollout.html"
@@ -77,13 +76,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 def main() -> None:
     """Convert the Markdown report into a standalone HTML file."""
     if not MARKDOWN_PATH.exists():
-        raise FileNotFoundError(
-            f"Markdown report not found: {MARKDOWN_PATH}"
-        )
+        raise FileNotFoundError(f"Markdown report not found: {MARKDOWN_PATH}")
 
-    markdown_content = MARKDOWN_PATH.read_text(
-        encoding="utf-8"
-    )
+    markdown_content = MARKDOWN_PATH.read_text(encoding="utf-8")
 
     html_content = markdown.markdown(
         markdown_content,
