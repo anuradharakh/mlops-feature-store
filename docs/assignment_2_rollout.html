@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADSP 31021 Assignment 2</title>
+
+    <style>
+        body {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 30px;
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            color: #202124;
+        }
+
+        h1, h2, h3 {
+            color: #800000;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid #cccccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            padding: 16px;
+            overflow-x: auto;
+            border-left: 4px solid #800000;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+<h1 id="adsp-31021-assignment-2-phase-wise-rollout">ADSP 31021 Assignment 2 — Phase-Wise Rollout</h1>
+<h2 id="project-overview">Project Overview</h2>
+<p><strong>Repository:</strong> <code>mlops-feature-store</code></p>
+<p><strong>Objective:</strong> Build a reproducible machine-learning pipeline using Feast for feature
+management, MLflow for experiment tracking, DVC for data versioning, and Scikit-learn
+for model development.</p>
+<hr />
+<h2 id="assignment-requirement-mapping">Assignment Requirement Mapping</h2>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Implementation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dataset selection</td>
+<td>Provided <code>athletes.csv</code> dataset</td>
+</tr>
+<tr>
+<td>MLOps platform</td>
+<td>MLflow</td>
+</tr>
+<tr>
+<td>End-to-end pipeline</td>
+<td>Modular Python pipeline</td>
+</tr>
+<tr>
+<td>Feature store</td>
+<td>Feast</td>
+</tr>
+<tr>
+<td>Feature versioning</td>
+<td>Feature Version 1 and Feature Version 2</td>
+</tr>
+<tr>
+<td>Experimentation</td>
+<td>Four Random Forest experiments</td>
+</tr>
+<tr>
+<td>Reproducibility</td>
+<td>Git, DVC, requirements, configuration, and fixed seed</td>
+</tr>
+<tr>
+<td>Documentation</td>
+<td>README and phase-wise HTML report</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="phase-1-repository-and-environment-setup">Phase 1 — Repository and Environment Setup</h2>
+<h3 id="objective">Objective</h3>
+<p>Create a modular VS Code repository with an isolated Python environment and
+reproducible dependency management.</p>
+<h3 id="completed-work">Completed work</h3>
+<ul>
+<li>Created the Git repository.</li>
+<li>Created a Python virtual environment.</li>
+<li>Added dependency management.</li>
+<li>Configured Ruff and Pytest.</li>
+<li>Initialized DVC.</li>
+<li>Created the modular source-code structure.</li>
+</ul>
+<h3 id="status">Status</h3>
+<p>Completed.</p>
+<hr />
+<h2 id="phase-2-dataset-ingestion-and-profiling">Phase 2 — Dataset Ingestion and Profiling</h2>
+<h3 id="objective_1">Objective</h3>
+<p>Create an immutable, versioned source dataset and generate reproducible
+raw-data validation and profiling artifacts.</p>
+<h3 id="implementation">Implementation</h3>
+<ul>
+<li>The original athlete ZIP archive is stored under <code>data/source/</code>.</li>
+<li>DVC tracks the archive without committing the large file to Git.</li>
+<li>The ingestion module extracts the raw CSV without modifying its contents.</li>
+<li>Required columns are validated automatically.</li>
+<li>Profiling generates schema, missing-value, numerical, and categorical reports.</li>
+</ul>
+<h3 id="generated-artifacts">Generated artifacts</h3>
+<ul>
+<li><code>reports/validation/raw_profile.json</code></li>
+<li><code>reports/validation/raw_schema.csv</code></li>
+<li><code>reports/validation/raw_missing_values.csv</code></li>
+<li><code>reports/validation/raw_numeric_summary.csv</code></li>
+<li><code>reports/validation/raw_categorical_summary.csv</code></li>
+<li><code>reports/figures/raw_missing_values.png</code></li>
+</ul>
+<h3 id="data-handling-assumptions">Data-handling assumptions</h3>
+<ul>
+<li>The source archive contains exactly one CSV file.</li>
+<li>The source archive is treated as immutable.</li>
+<li>No cleaning or feature engineering occurs during ingestion.</li>
+<li><code>athlete_id</code> is retained as the candidate Feast entity key.</li>
+<li>Data-quality issues will be handled explicitly in Phase 3.</li>
+</ul>
+<h3 id="validation">Validation</h3>
+<ul>
+<li>The ingestion process completed successfully.</li>
+<li>Required columns were validated.</li>
+<li>Automated ingestion tests passed.</li>
+<li>Ruff formatting and lint checks passed.</li>
+<li>DVC reports that the source dataset is up to date.</li>
+</ul>
+<h3 id="status_1">Status</h3>
+<p>Completed.</p>
+<hr />
+<h2 id="phase-3-preprocessing-and-label-construction">Phase 3 — Preprocessing and Label Construction</h2>
+<p>To be completed.</p>
+<hr />
+<h2 id="phase-4-feature-version-1">Phase 4 — Feature Version 1</h2>
+<p>To be completed.</p>
+<hr />
+<h2 id="phase-5-feature-version-2">Phase 5 — Feature Version 2</h2>
+<p>To be completed.</p>
+<hr />
+<h2 id="phase-6-feast-integration">Phase 6 — Feast Integration</h2>
+<p>To be completed.</p>
+<hr />
+<h2 id="phase-7-feature-retrieval">Phase 7 — Feature Retrieval</h2>
+<p>To be completed.</p>
+<hr />
+<h2 id="phase-8-scikit-learn-model-pipeline">Phase 8 — Scikit-learn Model Pipeline</h2>
+<p>To be completed.</p>
+<hr />
+<h2 id="phase-9-mlflow-experiment-tracking">Phase 9 — MLflow Experiment Tracking</h2>
+<p>To be completed.</p>
+<hr />
+<h2 id="phase-10-four-required-experiments">Phase 10 — Four Required Experiments</h2>
+<p>To be completed.</p>
+<hr />
+<h2 id="phase-11-model-evaluation-and-comparison">Phase 11 — Model Evaluation and Comparison</h2>
+<p>To be completed.</p>
+<hr />
+<h2 id="phase-12-automated-pipeline">Phase 12 — Automated Pipeline</h2>
+<p>To be completed.</p>
+<hr />
+<h2 id="phase-13-testing-and-code-quality">Phase 13 — Testing and Code Quality</h2>
+<p>To be completed.</p>
+<hr />
+<h2 id="final-recommendation">Final Recommendation</h2>
+<p>To be completed after experiment evaluation.</p>
+</body>
+</html>
