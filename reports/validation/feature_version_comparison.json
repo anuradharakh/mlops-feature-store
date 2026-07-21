@@ -1,0 +1,37 @@
+{
+  "baseline_version": "v1",
+  "candidate_version": "v2",
+  "baseline_feature_view": "athlete_features_v1",
+  "candidate_feature_view": "athlete_features_v2",
+  "v1_feature_count": 5,
+  "v2_feature_count": 8,
+  "v1_features": [
+    "age",
+    "weight",
+    "height",
+    "gender",
+    "region"
+  ],
+  "v2_features": [
+    "age",
+    "weight",
+    "height",
+    "gender",
+    "region",
+    "bmi",
+    "age_squared",
+    "weight_height_ratio"
+  ],
+  "added_features": [
+    "bmi",
+    "age_squared",
+    "weight_height_ratio"
+  ],
+  "removed_features": [],
+  "same_row_count": true,
+  "same_entity_population": true,
+  "v1_row_count": 81707,
+  "v2_row_count": 81707,
+  "v1_data_hash_sha256": "69d28f4fa6883a7335db8cd93d7933d59d394fb66cffa561f80815cea84fa5fc",
+  "v2_data_hash_sha256": "4beb843da9fb8cc10656b83abe2010c41753a26dea4ceee3501f7c13d5cedbc9"
+}

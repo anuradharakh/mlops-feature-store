@@ -30,3 +30,48 @@ feature_versions:
       - candj
       - snatch
       - backsq
+
+  v2:
+    name: athlete_features_v2
+    parent_version: v1
+
+    description: >
+      Enhanced athlete feature version extending the stable baseline
+      with engineered physical and nonlinear features.
+
+    entity_key: athlete_id
+    timestamp_column: event_timestamp
+
+    features:
+      - age
+      - weight
+      - height
+      - gender
+      - region
+      - bmi
+      - age_squared
+      - weight_height_ratio
+
+    numerical_features:
+      - age
+      - weight
+      - height
+      - bmi
+      - age_squared
+      - weight_height_ratio
+
+    categorical_features:
+      - gender
+      - region
+
+    transformations:
+      - bmi = 703 * weight / height^2
+      - age_squared = age^2
+      - weight_height_ratio = weight / height
+
+    target_leakage_columns:
+      - total_lift
+      - deadlift
+      - candj
+      - snatch
+      - backsq

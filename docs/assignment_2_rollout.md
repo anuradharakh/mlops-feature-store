@@ -206,7 +206,64 @@ Completed.
 
 ## Phase 5 — Feature Version 2
 
-To be completed.
+### Objective
+
+Create an enhanced feature version that preserves the Version 1 entity
+population while adding deterministic engineered features.
+
+### Version lineage
+
+Feature Version 2 is derived from Feature Version 1 and contains all five
+baseline features:
+
+- `age`
+- `weight`
+- `height`
+- `gender`
+- `region`
+
+It adds:
+
+- `bmi`
+- `age_squared`
+- `weight_height_ratio`
+
+### Feature engineering
+
+BMI was calculated using the imperial-unit formula because weight is measured
+in pounds and height is measured in inches:
+
+`bmi = 703 × weight / height²`
+
+The remaining transformations were:
+
+- `age_squared = age²`
+- `weight_height_ratio = weight / height`
+
+Missing source values were intentionally preserved. No feature imputation or
+categorical encoding was performed during feature generation. Those operations
+will be fitted only on the training partition in the model pipeline.
+
+### Version integrity
+
+Feature Versions 1 and 2 contain the same 81,707 athlete entities and aligned
+event timestamps. Version 2 adds three features and removes none.
+
+Both versions have separate Parquet artifacts, manifests, schemas,
+missingness reports, and deterministic data hashes.
+
+### Generated artifacts
+
+- `data/features/v2/athlete_features_v2.parquet`
+- `reports/validation/feature_v2_manifest.json`
+- `reports/validation/feature_v2_missingness.csv`
+- `reports/validation/feature_v2_schema.csv`
+- `reports/validation/feature_v2_engineering_summary.csv`
+- `reports/validation/feature_version_comparison.json`
+
+### Status
+
+Completed.
 
 ---
 

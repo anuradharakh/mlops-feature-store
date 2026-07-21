@@ -1,0 +1,51 @@
+{
+  "feature_version": "v2",
+  "feature_view_name": "athlete_features_v2",
+  "description": "Enhanced athlete feature version extending the stable baseline with engineered physical and nonlinear features.",
+  "entity_key": "athlete_id",
+  "timestamp_column": "event_timestamp",
+  "features": [
+    "age",
+    "weight",
+    "height",
+    "gender",
+    "region",
+    "bmi",
+    "age_squared",
+    "weight_height_ratio"
+  ],
+  "numerical_features": [
+    "age",
+    "weight",
+    "height",
+    "bmi",
+    "age_squared",
+    "weight_height_ratio"
+  ],
+  "categorical_features": [
+    "gender",
+    "region"
+  ],
+  "feature_count": 8,
+  "row_count": 81707,
+  "entity_count": 81707,
+  "duplicate_entity_count": 0,
+  "missing_feature_values": 53657,
+  "schema_hash_sha256": "ab14e57b9fb91f0dfe1129230b8f26faa6eaed184bb251d6ba2ad81be8dcae99",
+  "data_hash_sha256": "4beb843da9fb8cc10656b83abe2010c41753a26dea4ceee3501f7c13d5cedbc9",
+  "target_leakage_columns_excluded": [
+    "total_lift",
+    "deadlift",
+    "candj",
+    "snatch",
+    "backsq"
+  ],
+  "parent_feature_version": "v1",
+  "transformations": [
+    "bmi = 703 * weight / height^2",
+    "age_squared = age^2",
+    "weight_height_ratio = weight / height"
+  ],
+  "parent_data_hash_sha256": "69d28f4fa6883a7335db8cd93d7933d59d394fb66cffa561f80815cea84fa5fc",
+  "same_entity_population_as_v1": true
+}

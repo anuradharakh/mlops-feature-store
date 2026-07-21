@@ -1,0 +1,9 @@
+feature,feature_type,missing_count,missing_percentage,unique_non_null_values
+age,numerical,3,0.0,44
+weight,numerical,7823,9.57,302
+height,numerical,4920,6.02,43
+gender,categorical,0,0.0,3
+region,categorical,18884,23.11,17
+bmi,numerical,11012,13.48,2866
+age_squared,numerical,3,0.0,44
+weight_height_ratio,numerical,11012,13.48,2638
