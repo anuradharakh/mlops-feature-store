@@ -56,398 +56,528 @@
 </head>
 
 <body>
-<h1 id="adsp-31021-assignment-2-phase-wise-rollout">ADSP 31021 Assignment 2 — Phase-Wise Rollout</h1>
-<h2 id="project-overview">Project Overview</h2>
-<p><strong>Repository:</strong> <code>mlops-feature-store</code></p>
-<p><strong>Objective:</strong> Build a reproducible machine-learning pipeline using Feast for feature
-management, MLflow for experiment tracking, DVC for data versioning, and Scikit-learn
-for model development.</p>
+<h1 id="assignment-2-rollout-report-feature-store-and-experiment-tracking">Assignment 2 Rollout Report — Feature Store and Experiment Tracking</h1>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>This project implements a reproducible MLOps workflow for predicting athlete
+<code>total_lift</code> using the provided athlete dataset.</p>
+<p>The completed solution includes:</p>
+<ul>
+<li>DVC-based source-data versioning</li>
+<li>Modular ingestion and preprocessing</li>
+<li>Two managed feature versions</li>
+<li>Feast historical and online feature retrieval</li>
+<li>One persisted train/test split shared by all experiments</li>
+<li>A reusable Scikit-learn preprocessing and regression pipeline</li>
+<li>Four manually configured Random Forest experiments</li>
+<li>MLflow experiment tracking</li>
+<li>Model comparison and final recommendation</li>
+<li>Automated pipeline orchestration</li>
+<li>Testing, code-quality checks, and submission auditing</li>
+</ul>
+<p>The best-performing model was <code>v2_hp1</code>, with:</p>
+<ul>
+<li>Test RMSE: <code>165.1166</code></li>
+<li>Test MAE: <code>126.9015</code></li>
+<li>Test R²: <code>0.6484</code></li>
+</ul>
+<p>The enhanced feature set improved generalization, while the larger HP2 model
+configurations showed clear overfitting.</p>
 <hr />
-<h2 id="assignment-requirement-mapping">Assignment Requirement Mapping</h2>
+<h2 id="project-objective">Project Objective</h2>
+<p>The objective is to build a production-style machine-learning workflow that predicts an
+athlete's combined lift total while demonstrating feature versioning and experiment
+tracking.</p>
+<p>The target is calculated as:</p>
+<pre><code class="language-text">total_lift = deadlift + candj + snatch + backsq
+</code></pre>
+<p>The four component columns are excluded from model features because they directly define
+the target.</p>
+<hr />
+<h2 id="solution-architecture">Solution Architecture</h2>
+<pre><code class="language-text">athletes.zip
+    |
+    v
+DVC-tracked source data
+    |
+    v
+Ingestion and schema validation
+    |
+    v
+Preprocessing and target construction
+    |
+    +-------------------------+
+    |                         |
+    v                         v
+Feature Version 1     Feature Version 2
+    |                         |
+    +------------+------------+
+                 |
+                 v
+          Feast feature store
+   historical + online retrieval
+                 |
+                 v
+       Persisted train/test split
+                 |
+                 v
+   Scikit-learn preprocessing pipeline
+                 |
+                 v
+ Four Random Forest experiment combinations
+                 |
+                 v
+       MLflow tracking and comparison
+                 |
+                 v
+  Reports, HTML documentation, and audit
+</code></pre>
+<hr />
+<h2 id="phase-status-overview">Phase Status Overview</h2>
 <table>
 <thead>
 <tr>
-<th>Requirement</th>
-<th>Implementation</th>
+<th style="text-align: right;">Phase</th>
+<th>Description</th>
+<th>Status</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Dataset selection</td>
-<td>Provided <code>athletes.csv</code> dataset</td>
+<td style="text-align: right;">1</td>
+<td>Repository and environment foundation</td>
+<td>Completed</td>
 </tr>
 <tr>
-<td>MLOps platform</td>
-<td>MLflow</td>
+<td style="text-align: right;">2</td>
+<td>Source-data versioning and ingestion</td>
+<td>Completed</td>
 </tr>
 <tr>
-<td>End-to-end pipeline</td>
-<td>Modular Python pipeline</td>
+<td style="text-align: right;">3</td>
+<td>Preprocessing and target construction</td>
+<td>Completed</td>
 </tr>
 <tr>
-<td>Feature store</td>
-<td>Feast</td>
+<td style="text-align: right;">4</td>
+<td>Feature Version 1</td>
+<td>Completed</td>
 </tr>
 <tr>
-<td>Feature versioning</td>
-<td>Feature Version 1 and Feature Version 2</td>
+<td style="text-align: right;">5</td>
+<td>Feature Version 2</td>
+<td>Completed</td>
 </tr>
 <tr>
-<td>Experimentation</td>
-<td>Four Random Forest experiments</td>
+<td style="text-align: right;">6</td>
+<td>Feast feature store</td>
+<td>Completed</td>
 </tr>
 <tr>
-<td>Reproducibility</td>
-<td>Git, DVC, requirements, configuration, and fixed seed</td>
+<td style="text-align: right;">7</td>
+<td>Reproducible training split</td>
+<td>Completed</td>
 </tr>
 <tr>
-<td>Documentation</td>
-<td>README and phase-wise HTML report</td>
+<td style="text-align: right;">8</td>
+<td>Scikit-learn model pipeline</td>
+<td>Completed</td>
+</tr>
+<tr>
+<td style="text-align: right;">9</td>
+<td>MLflow experiments</td>
+<td>Completed and validated</td>
+</tr>
+<tr>
+<td style="text-align: right;">10</td>
+<td>Automation and submission audit</td>
+<td>Implemented; final clean-clone validation pending</td>
+</tr>
+<tr>
+<td style="text-align: right;">11</td>
+<td>Model evaluation and comparison</td>
+<td>Completed</td>
+</tr>
+<tr>
+<td style="text-align: right;">12</td>
+<td>Automated pipeline summary</td>
+<td>Implemented</td>
+</tr>
+<tr>
+<td style="text-align: right;">13</td>
+<td>Testing and code quality</td>
+<td>Implemented; final strict audit pending</td>
 </tr>
 </tbody>
 </table>
+<p>Phases 11–13 consolidate and document work implemented during earlier technical phases.
+They are not additional model-training requirements.</p>
 <hr />
-<h2 id="phase-1-repository-and-environment-setup">Phase 1 — Repository and Environment Setup</h2>
+<h2 id="phase-1-repository-and-environment-foundation">Phase 1 — Repository and Environment Foundation</h2>
 <h3 id="objective">Objective</h3>
-<p>Create a modular VS Code repository with an isolated Python environment and
-reproducible dependency management.</p>
-<h3 id="completed-work">Completed work</h3>
+<p>Create a modular, reproducible Python project rather than a notebook-only solution.</p>
+<h3 id="implementation">Implementation</h3>
+<p>The repository uses:</p>
 <ul>
-<li>Created the Git repository.</li>
-<li>Created a Python virtual environment.</li>
-<li>Added dependency management.</li>
-<li>Configured Ruff and Pytest.</li>
-<li>Initialized DVC.</li>
-<li>Created the modular source-code structure.</li>
+<li>Python 3.11</li>
+<li>Editable package installation</li>
+<li><code>src/</code> package layout</li>
+<li>YAML configuration</li>
+<li>Git version control</li>
+<li>DVC</li>
+<li>Pytest</li>
+<li>Ruff</li>
+<li>Make</li>
+<li>GitHub Actions</li>
+</ul>
+<p>The repository separates:</p>
+<ul>
+<li>Configuration</li>
+<li>Source code</li>
+<li>Feature-store definitions</li>
+<li>Execution scripts</li>
+<li>Tests</li>
+<li>Data artifacts</li>
+<li>Reports</li>
+<li>Documentation</li>
 </ul>
 <h3 id="status">Status</h3>
 <p>Completed.</p>
 <hr />
-<h2 id="phase-2-dataset-ingestion-and-profiling">Phase 2 — Dataset Ingestion and Profiling</h2>
+<h2 id="phase-2-source-data-versioning-and-ingestion">Phase 2 — Source-Data Versioning and Ingestion</h2>
 <h3 id="objective_1">Objective</h3>
-<p>Create an immutable, versioned source dataset and generate reproducible
-raw-data validation and profiling artifacts.</p>
-<h3 id="implementation">Implementation</h3>
+<p>Track the original dataset and materialize a validated raw-data layer.</p>
+<h3 id="source-data">Source data</h3>
+<pre><code class="language-text">data/source/athletes.zip
+</code></pre>
+<p>The source ZIP is tracked using DVC metadata.</p>
+<h3 id="raw-dataset-profile">Raw dataset profile</h3>
 <ul>
-<li>The original athlete ZIP archive is stored under <code>data/source/</code>.</li>
-<li>DVC tracks the archive without committing the large file to Git.</li>
-<li>The ingestion module extracts the raw CSV without modifying its contents.</li>
-<li>Required columns are validated automatically.</li>
-<li>Profiling generates schema, missing-value, numerical, and categorical reports.</li>
+<li>Rows: <code>423,006</code></li>
+<li>Columns: <code>27</code></li>
 </ul>
-<h3 id="generated-artifacts">Generated artifacts</h3>
+<h3 id="ingestion-responsibilities">Ingestion responsibilities</h3>
 <ul>
-<li><code>reports/validation/raw_profile.json</code></li>
-<li><code>reports/validation/raw_schema.csv</code></li>
-<li><code>reports/validation/raw_missing_values.csv</code></li>
-<li><code>reports/validation/raw_numeric_summary.csv</code></li>
-<li><code>reports/validation/raw_categorical_summary.csv</code></li>
-<li><code>reports/figures/raw_missing_values.png</code></li>
-</ul>
-<h3 id="data-handling-assumptions">Data-handling assumptions</h3>
-<ul>
-<li>The source archive contains exactly one CSV file.</li>
-<li>The source archive is treated as immutable.</li>
-<li>No cleaning or feature engineering occurs during ingestion.</li>
-<li><code>athlete_id</code> is retained as the candidate Feast entity key.</li>
-<li>Data-quality issues will be handled explicitly in Phase 3.</li>
-</ul>
-<h3 id="validation">Validation</h3>
-<ul>
-<li>The ingestion process completed successfully.</li>
-<li>Required columns were validated.</li>
-<li>Automated ingestion tests passed.</li>
-<li>Ruff formatting and lint checks passed.</li>
-<li>DVC reports that the source dataset is up to date.</li>
+<li>Locate the source ZIP</li>
+<li>Extract the athlete CSV</li>
+<li>Validate that data is readable</li>
+<li>Persist a reproducible raw artifact</li>
+<li>Produce reviewer-facing ingestion evidence</li>
 </ul>
 <h3 id="status_1">Status</h3>
 <p>Completed.</p>
 <hr />
-<h2 id="phase-3-preprocessing-and-label-construction">Phase 3 — Preprocessing and Label Construction</h2>
+<h2 id="phase-3-preprocessing-and-target-construction">Phase 3 — Preprocessing and Target Construction</h2>
 <h3 id="objective_2">Objective</h3>
-<p>Create a deterministic processed dataset, Feast-compatible entity keys,
-event timestamps, and a regression label while preventing target leakage.</p>
-<h3 id="processing-decisions">Processing decisions</h3>
-<ul>
-<li><code>athlete_id</code> is retained as the Feast entity key.</li>
-<li>The original retrieval timestamp is used when available.</li>
-<li>A deterministic fallback timestamp is generated for missing timestamps.</li>
-<li>Invalid survey responses are converted to missing values.</li>
-<li>Numerical values are converted using safe coercion.</li>
-<li>Implausible numerical values are replaced with missing values.</li>
-<li>Records missing any target component are excluded.</li>
-<li>Duplicate athlete records retain the latest observation.</li>
-<li>Missing predictor values are retained for training-only imputation.</li>
-</ul>
-<h3 id="target-definition">Target definition</h3>
-<p><code>total_lift</code> is calculated as:</p>
-<pre><code class="language-text">deadlift + candj + snatch + backsq
+<p>Create a model-ready population while preserving defensible data-cleaning decisions.</p>
+<h3 id="target-construction">Target construction</h3>
+<pre><code class="language-text">total_lift = deadlift + candj + snatch + backsq
 </code></pre>
-<h3 id="target-sentinel-value-correction">Target sentinel-value correction</h3>
-<p>Exploratory validation identified repeated lift-component values of <code>1</code>,
-including records where all four lift components were equal to <code>1</code>. This
-pattern was interpreted as a source-system placeholder rather than a valid
-measurement.</p>
-<p>The value <code>1</code> was therefore configured as a sentinel value for <code>deadlift</code>,
-<code>candj</code>, <code>snatch</code>, and <code>backsq</code>. The preprocessing pipeline replaced 135
-sentinel component values with missing values. Because multiple sentinel
-values occurred within some records, this resulted in 37 additional athlete
-records being excluded from label construction.</p>
-<p>After correction:</p>
+<h3 id="sentinel-handling">Sentinel handling</h3>
+<p>The value <code>1</code> was explicitly treated as a sentinel in lift-component fields.</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th style="text-align: right;">Sentinel replacements</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>deadlift</code></td>
+<td style="text-align: right;">33</td>
+</tr>
+<tr>
+<td><code>candj</code></td>
+<td style="text-align: right;">35</td>
+</tr>
+<tr>
+<td><code>snatch</code></td>
+<td style="text-align: right;">33</td>
+</tr>
+<tr>
+<td><code>backsq</code></td>
+<td style="text-align: right;">34</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td style="text-align: right;"><strong>135</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="row-counts">Row counts</h3>
+<table>
+<thead>
+<tr>
+<th>Measure</th>
+<th style="text-align: right;">Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Initial rows</td>
+<td style="text-align: right;">423,006</td>
+</tr>
+<tr>
+<td>Missing athlete IDs</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr>
+<td>Missing or invalid target rows</td>
+<td style="text-align: right;">341,296</td>
+</tr>
+<tr>
+<td>Final processed rows</td>
+<td style="text-align: right;">81,707</td>
+</tr>
+</tbody>
+</table>
+<h3 id="final-target-profile">Final target profile</h3>
 <ul>
-<li>Processed rows: 81,707</li>
-<li>Label rows: 81,707</li>
-<li>Sentinel values remaining: 0</li>
-<li>Total-lift range: 8 to 2,367</li>
+<li>Minimum: <code>8</code></li>
+<li>Maximum: <code>2,367</code></li>
+<li>Mean: approximately <code>985.455</code></li>
+<li>Median: <code>1,000</code></li>
 </ul>
-<p>A broad lower-target cutoff was intentionally avoided to preserve potentially
-valid beginner-athlete records.</p>
+<h3 id="lower-tail-decision">Lower-tail decision</h3>
+<p>A small number of very low target values remained after sentinel replacement. These rows
+were retained because there was not enough documented evidence to classify them as
+sentinels or corrupted values.</p>
+<p>This avoids introducing an arbitrary lower cutoff solely to improve model metrics.</p>
+<h3 id="leakage-prevention">Leakage prevention</h3>
+<p>The following target-component columns are excluded from the model matrix:</p>
+<pre><code class="language-text">deadlift
+candj
+snatch
+backsq
+</code></pre>
+<h3 id="status_2">Status</h3>
+<p>Completed.</p>
 <hr />
 <h2 id="phase-4-feature-version-1">Phase 4 — Feature Version 1</h2>
 <h3 id="objective_3">Objective</h3>
-<p>Create a stable baseline feature version for athlete-strength modeling and
-prepare it as the offline source for later Feast registration.</p>
-<h3 id="feature-definition">Feature definition</h3>
-<p>Feature Version 1 contains:</p>
+<p>Create a baseline feature set managed independently from the processed label data.</p>
+<h3 id="features">Features</h3>
+<pre><code class="language-text">age
+weight
+height
+gender
+region
+</code></pre>
+<h3 id="characteristics">Characteristics</h3>
 <ul>
-<li><code>age</code></li>
-<li><code>weight</code></li>
-<li><code>height</code></li>
-<li><code>gender</code></li>
-<li><code>region</code></li>
+<li>Feature count: <code>5</code></li>
+<li>Population: <code>81,707</code></li>
+<li>Entity key: <code>athlete_id</code></li>
+<li>Timestamp: <code>event_timestamp</code></li>
+<li>No target or target-component columns</li>
 </ul>
-<p>The table also contains the Feast-required entity and timestamp fields:</p>
-<ul>
-<li><code>athlete_id</code></li>
-<li><code>event_timestamp</code></li>
-</ul>
-<h3 id="design-rationale">Design rationale</h3>
-<p>Version 1 intentionally uses a small, interpretable set of demographic and
-physical features. Higher-cardinality survey responses are excluded from the
-baseline and will be normalized or engineered in Feature Version 2.</p>
-<p>Missing predictor values are preserved. Imputation and encoding are deferred
-to the Scikit-learn training pipeline so that those transformations are fitted
-only on the training partition.</p>
-<h3 id="leakage-prevention">Leakage prevention</h3>
-<p>The following target-related columns are explicitly prohibited:</p>
-<ul>
-<li><code>total_lift</code></li>
-<li><code>deadlift</code></li>
-<li><code>candj</code></li>
-<li><code>snatch</code></li>
-<li><code>backsq</code></li>
-</ul>
-<h3 id="generated-artifacts_1">Generated artifacts</h3>
-<ul>
-<li><code>data/features/v1/athlete_features_v1.parquet</code></li>
-<li><code>reports/validation/feature_v1_manifest.json</code></li>
-<li><code>reports/validation/feature_v1_missingness.csv</code></li>
-<li><code>reports/validation/feature_v1_schema.csv</code></li>
-</ul>
-<h3 id="version-evidence">Version evidence</h3>
-<p>The Version 1 manifest records the feature list, data types, entity count,
-missing-value counts, schema hash, and deterministic feature-data hash.</p>
-<h3 id="status_2">Status</h3>
+<h3 id="artifact">Artifact</h3>
+<pre><code class="language-text">data/features/v1/athlete_features_v1.parquet
+</code></pre>
+<h3 id="status_3">Status</h3>
 <p>Completed.</p>
 <hr />
 <h2 id="phase-5-feature-version-2">Phase 5 — Feature Version 2</h2>
 <h3 id="objective_4">Objective</h3>
-<p>Create an enhanced feature version that preserves the Version 1 entity
-population while adding deterministic engineered features.</p>
-<h3 id="version-lineage">Version lineage</h3>
-<p>Feature Version 2 is derived from Feature Version 1 and contains all five
-baseline features:</p>
-<ul>
-<li><code>age</code></li>
-<li><code>weight</code></li>
-<li><code>height</code></li>
-<li><code>gender</code></li>
-<li><code>region</code></li>
-</ul>
-<p>It adds:</p>
-<ul>
-<li><code>bmi</code></li>
-<li><code>age_squared</code></li>
-<li><code>weight_height_ratio</code></li>
-</ul>
-<h3 id="feature-engineering">Feature engineering</h3>
-<p>BMI was calculated using the imperial-unit formula because weight is measured
-in pounds and height is measured in inches:</p>
-<p><code>bmi = 703 × weight / height²</code></p>
-<p>The remaining transformations were:</p>
-<ul>
-<li><code>age_squared = age²</code></li>
-<li><code>weight_height_ratio = weight / height</code></li>
-</ul>
-<p>Missing source values were intentionally preserved. No feature imputation or
-categorical encoding was performed during feature generation. Those operations
-will be fitted only on the training partition in the model pipeline.</p>
-<h3 id="version-integrity">Version integrity</h3>
-<p>Feature Versions 1 and 2 contain the same 81,707 athlete entities and aligned
-event timestamps. Version 2 adds three features and removes none.</p>
-<p>Both versions have separate Parquet artifacts, manifests, schemas,
-missingness reports, and deterministic data hashes.</p>
-<h3 id="generated-artifacts_2">Generated artifacts</h3>
-<ul>
-<li><code>data/features/v2/athlete_features_v2.parquet</code></li>
-<li><code>reports/validation/feature_v2_manifest.json</code></li>
-<li><code>reports/validation/feature_v2_missingness.csv</code></li>
-<li><code>reports/validation/feature_v2_schema.csv</code></li>
-<li><code>reports/validation/feature_v2_engineering_summary.csv</code></li>
-<li><code>reports/validation/feature_version_comparison.json</code></li>
-</ul>
-<h3 id="status_3">Status</h3>
+<p>Create an enhanced feature version while preserving the same entity and timestamp
+population.</p>
+<h3 id="added-features">Added features</h3>
+<h4 id="bmi">BMI</h4>
+<pre><code class="language-text">bmi = 703 × weight / height²
+</code></pre>
+<h4 id="squared-age">Squared age</h4>
+<pre><code class="language-text">age_squared = age²
+</code></pre>
+<h4 id="weight-to-height-ratio">Weight-to-height ratio</h4>
+<pre><code class="language-text">weight_height_ratio = weight / height
+</code></pre>
+<h3 id="version-comparison">Version comparison</h3>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th style="text-align: right;">Feature count</th>
+<th style="text-align: right;">Population</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">81,707</td>
+</tr>
+<tr>
+<td>v2</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">81,707</td>
+</tr>
+</tbody>
+</table>
+<p>Version 2 is a strict extension of Version 1. No baseline feature was removed.</p>
+<h3 id="artifact_1">Artifact</h3>
+<pre><code class="language-text">data/features/v2/athlete_features_v2.parquet
+</code></pre>
+<h3 id="status_4">Status</h3>
 <p>Completed.</p>
 <hr />
 <h2 id="phase-6-feast-feature-store">Phase 6 — Feast Feature Store</h2>
 <h3 id="objective_5">Objective</h3>
-<p>Register both feature versions in Feast and demonstrate historical and online
-feature retrieval.</p>
-<h3 id="local-architecture">Local architecture</h3>
-<p>The Feast deployment uses:</p>
-<ul>
-<li>Parquet files as the offline feature sources</li>
-<li>A local Feast registry</li>
-<li>SQLite as the online feature store</li>
-<li><code>athlete_id</code> as the entity join key</li>
-<li><code>event_timestamp</code> for point-in-time feature retrieval</li>
-</ul>
-<h3 id="registered-objects">Registered objects</h3>
+<p>Register both feature versions and validate offline and online retrieval.</p>
+<h3 id="feast-objects">Feast objects</h3>
 <p>Entity:</p>
-<ul>
-<li><code>athlete</code></li>
-</ul>
+<pre><code class="language-text">athlete
+</code></pre>
+<p>Join key:</p>
+<pre><code class="language-text">athlete_id
+</code></pre>
 <p>Feature views:</p>
-<ul>
-<li><code>athlete_features_v1</code></li>
-<li><code>athlete_features_v2</code></li>
-</ul>
+<pre><code class="language-text">athlete_features_v1
+athlete_features_v2
+</code></pre>
 <p>Feature services:</p>
-<ul>
-<li><code>athlete_strength_v1</code></li>
-<li><code>athlete_strength_v2</code></li>
-</ul>
-<p>Separate feature services provide explicit model-centric version tracking.</p>
+<pre><code class="language-text">athlete_strength_v1
+athlete_strength_v2
+</code></pre>
 <h3 id="historical-retrieval">Historical retrieval</h3>
-<p>The Phase 3 label artifact was supplied to Feast as an entity dataframe
-containing:</p>
-<ul>
-<li><code>athlete_id</code></li>
-<li><code>event_timestamp</code></li>
-<li><code>total_lift</code></li>
-</ul>
-<p>Feast retrieved point-in-time features for all 81,707 eligible athletes for
-both feature versions. The complete generated datasets are stored locally
-under <code>data/training/</code>.</p>
+<p>Feast point-in-time joins produced:</p>
+<table>
+<thead>
+<tr>
+<th>Dataset</th>
+<th style="text-align: right;">Rows</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Version 1 historical training table</td>
+<td style="text-align: right;">81,707</td>
+</tr>
+<tr>
+<td>Version 2 historical training table</td>
+<td style="text-align: right;">81,707</td>
+</tr>
+</tbody>
+</table>
 <h3 id="online-retrieval">Online retrieval</h3>
-<p>Both feature views were materialized from their Parquet offline sources into
-the SQLite online store. Online retrieval was validated for five athlete
-entities using both versioned feature services.</p>
-<h3 id="committed-evidence">Committed evidence</h3>
-<ul>
-<li><code>feature_repo/feature_store.yaml</code></li>
-<li><code>feature_repo/feature_definitions.py</code></li>
-<li><code>reports/feast/feast_apply_output.txt</code></li>
-<li><code>reports/feast/feature_registry_summary.json</code></li>
-<li><code>reports/feast/historical_v1_sample.csv</code></li>
-<li><code>reports/feast/historical_v2_sample.csv</code></li>
-<li><code>reports/feast/online_retrieval_sample.json</code></li>
-<li><code>reports/feast/feast_validation_summary.json</code></li>
-</ul>
-<p>The generated registry and online SQLite database are intentionally excluded
-because they can be reproduced by running:</p>
-<p><code>python scripts/run_feast.py --reset</code></p>
-<h3 id="status_4">Status</h3>
+<p>Both feature services were materialized to the local online store and queried for sample
+athletes.</p>
+<h3 id="reviewer-evidence">Reviewer evidence</h3>
+<pre><code class="language-text">reports/feast/feast_apply_output.txt
+reports/feast/feature_registry_summary.json
+reports/feast/historical_v1_sample.csv
+reports/feast/historical_v2_sample.csv
+reports/feast/online_retrieval_sample.json
+reports/feast/feast_validation_summary.json
+</code></pre>
+<h3 id="runtime-state">Runtime state</h3>
+<p>Local registry and online-store SQLite files are ignored because they can be rebuilt from
+the committed definitions and feature data.</p>
+<h3 id="status_5">Status</h3>
 <p>Completed.</p>
 <hr />
 <h2 id="phase-7-reproducible-training-split">Phase 7 — Reproducible Training Split</h2>
 <h3 id="objective_6">Objective</h3>
-<p>Prepare aligned versioned training datasets and create one deterministic
-train/test split that will be reused across all four experiments.</p>
-<h3 id="training-datasets">Training datasets</h3>
-<p>The training datasets were generated through Feast historical retrieval:</p>
+<p>Use one deterministic evaluation population across all four experiments.</p>
+<h3 id="configuration">Configuration</h3>
 <ul>
-<li><code>data/training/athlete_training_v1.parquet</code></li>
-<li><code>data/training/athlete_training_v2.parquet</code></li>
-</ul>
-<p>Both datasets contain the same athlete entities, event timestamps, and
-<code>total_lift</code> labels. Version 1 contains five model features, while Version 2
-contains eight.</p>
-<h3 id="split-strategy">Split strategy</h3>
-<p>A single 80/20 train/test split was generated using:</p>
-<ul>
+<li>Test size: <code>0.20</code></li>
 <li>Random state: <code>42</code></li>
-<li>Shuffling: enabled</li>
-<li>Entity-level split key: <code>athlete_id</code></li>
+<li>Shuffle: enabled</li>
+<li>Entity split key: <code>athlete_id</code></li>
 </ul>
-<p>The split membership is persisted as:</p>
-<ul>
-<li><code>data/splits/athlete_split.parquet</code></li>
-</ul>
-<p>This artifact will be reused for every experiment, ensuring that differences
-in model performance are attributable to feature versions or hyperparameter
-configurations rather than different evaluation populations.</p>
-<h3 id="leakage-prevention_1">Leakage prevention</h3>
-<p>The source target components were explicitly prohibited from the training
-datasets:</p>
-<ul>
-<li><code>deadlift</code></li>
-<li><code>candj</code></li>
-<li><code>snatch</code></li>
-<li><code>backsq</code></li>
-</ul>
-<p>The only label available to the model pipeline is <code>total_lift</code>.</p>
-<h3 id="generated-evidence">Generated evidence</h3>
-<ul>
-<li><code>reports/validation/training_split_summary.json</code></li>
-<li><code>reports/validation/training_dataset_missingness.csv</code></li>
-<li><code>reports/figures/training_split_target_distribution.png</code></li>
-</ul>
-<h3 id="status_5">Status</h3>
+<h3 id="split-results">Split results</h3>
+<table>
+<thead>
+<tr>
+<th>Partition</th>
+<th style="text-align: right;">Entities</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Train</td>
+<td style="text-align: right;">65,365</td>
+</tr>
+<tr>
+<td>Test</td>
+<td style="text-align: right;">16,342</td>
+</tr>
+<tr>
+<td>Total</td>
+<td style="text-align: right;">81,707</td>
+</tr>
+</tbody>
+</table>
+<h3 id="persisted-artifact">Persisted artifact</h3>
+<pre><code class="language-text">data/splits/athlete_split.parquet
+</code></pre>
+<h3 id="rationale">Rationale</h3>
+<p>The same membership is applied to both feature versions and both hyperparameter sets.
+This prevents different split populations from confounding the model comparison.</p>
+<h3 id="evidence">Evidence</h3>
+<pre><code class="language-text">reports/validation/training_split_summary.json
+reports/validation/training_dataset_missingness.csv
+reports/figures/training_split_target_distribution.png
+</code></pre>
+<h3 id="status_6">Status</h3>
 <p>Completed.</p>
 <hr />
 <h2 id="phase-8-scikit-learn-model-pipeline">Phase 8 — Scikit-learn Model Pipeline</h2>
-<h2 id="phase-8-scikit-learn-model-pipeline_1">Phase 8 — Scikit-learn Model Pipeline</h2>
 <h3 id="objective_7">Objective</h3>
-<p>Build one reusable Scikit-learn pipeline that can be applied consistently
-across both feature versions and both hyperparameter configurations.</p>
-<h3 id="preprocessing">Preprocessing</h3>
-<p>Numerical features use median imputation. Categorical features use
-most-frequent imputation followed by one-hot encoding.</p>
-<p>All preprocessing components are contained within the fitted Scikit-learn
-pipeline. The pipeline is fitted only on the training partition, preventing
-test-set information from influencing imputation statistics or category
-discovery.</p>
-<p>Unknown categorical values are ignored during transformation so that
-previously unseen test or serving values do not cause prediction failures.</p>
+<p>Build one reusable model pipeline for both feature versions and both hyperparameter
+configurations.</p>
+<h3 id="numerical-preprocessing">Numerical preprocessing</h3>
+<ul>
+<li>Median imputation</li>
+</ul>
+<h3 id="categorical-preprocessing">Categorical preprocessing</h3>
+<ul>
+<li>Most-frequent imputation</li>
+<li>One-hot encoding</li>
+<li>Unknown categories ignored</li>
+</ul>
+<h3 id="leakage-protection">Leakage protection</h3>
+<p>All preprocessing is fitted inside the Scikit-learn pipeline using training data only.</p>
 <h3 id="estimator">Estimator</h3>
-<p>The selected algorithm is <code>RandomForestRegressor</code>.</p>
-<p>Two manually configured hyperparameter sets are defined:</p>
-<ul>
-<li><code>hp1</code>: 100 estimators, maximum depth 12, minimum leaf size 5</li>
-<li><code>hp2</code>: 300 estimators, maximum depth 20, minimum leaf size 2</li>
-</ul>
-<p>No automated hyperparameter tuning or AutoML is used.</p>
+<pre><code class="language-text">RandomForestRegressor
+</code></pre>
+<h3 id="hp1">HP1</h3>
+<pre><code class="language-yaml">n_estimators: 100
+max_depth: 12
+min_samples_split: 2
+min_samples_leaf: 5
+max_features: sqrt
+bootstrap: true
+</code></pre>
+<h3 id="hp2">HP2</h3>
+<pre><code class="language-yaml">n_estimators: 300
+max_depth: 20
+min_samples_split: 2
+min_samples_leaf: 2
+max_features: 1.0
+bootstrap: true
+</code></pre>
+<p>No AutoML or automated hyperparameter tuning is used.</p>
 <h3 id="smoke-test">Smoke test</h3>
-<p>A deterministic subset of 10,000 training records and 2,500 test records was
-used to validate the complete model pipeline before experiment tracking.</p>
-<p>The smoke test is an infrastructure check and is not counted as one of the
-four official experiments.</p>
-<h3 id="generated-evidence_1">Generated evidence</h3>
+<p>A deterministic subset was used to validate:</p>
 <ul>
-<li><code>reports/validation/model_pipeline_smoke_summary.json</code></li>
-<li><code>reports/validation/model_pipeline_smoke_predictions.csv</code></li>
-<li><code>reports/validation/model_pipeline_smoke_feature_importance.csv</code></li>
-<li><code>reports/validation/model_pipeline_structure.txt</code></li>
-<li><code>reports/figures/model_pipeline_smoke_actual_vs_predicted.png</code></li>
+<li>Data split loading</li>
+<li>Imputation</li>
+<li>Encoding</li>
+<li>Training</li>
+<li>Prediction</li>
+<li>Metric calculation</li>
+<li>Feature importance extraction</li>
+<li>Plot generation</li>
 </ul>
-<h3 id="status_6">Status</h3>
-<h2 id="completed">Completed.</h2>
+<p>The smoke test is not one of the four official experiments.</p>
+<h3 id="status_7">Status</h3>
+<p>Completed.</p>
+<hr />
 <h2 id="phase-9-mlflow-experiment-tracking">Phase 9 — MLflow Experiment Tracking</h2>
 <h3 id="objective_8">Objective</h3>
-<p>Execute and track the four required model experiments using the same
-Random Forest algorithm and the same persisted train/test split.</p>
-<h3 id="experiment-matrix">Experiment matrix</h3>
+<p>Track the required two-by-two experiment matrix.</p>
+<h3 id="official-runs">Official runs</h3>
 <table>
 <thead>
 <tr>
@@ -459,23 +589,23 @@ Random Forest algorithm and the same persisted train/test split.</p>
 <tbody>
 <tr>
 <td><code>v1_hp1</code></td>
-<td>Version 1</td>
-<td>HP1</td>
+<td>v1</td>
+<td>hp1</td>
 </tr>
 <tr>
 <td><code>v1_hp2</code></td>
-<td>Version 1</td>
-<td>HP2</td>
+<td>v1</td>
+<td>hp2</td>
 </tr>
 <tr>
 <td><code>v2_hp1</code></td>
-<td>Version 2</td>
-<td>HP1</td>
+<td>v2</td>
+<td>hp1</td>
 </tr>
 <tr>
 <td><code>v2_hp2</code></td>
-<td>Version 2</td>
-<td>HP2</td>
+<td>v2</td>
+<td>hp2</td>
 </tr>
 </tbody>
 </table>
@@ -483,138 +613,377 @@ Random Forest algorithm and the same persisted train/test split.</p>
 <p>MLflow uses:</p>
 <ul>
 <li>SQLite for experiment and run metadata</li>
-<li>A local filesystem artifact store for fitted models</li>
-<li>Explicit tags for feature version, hyperparameter configuration,
-  Git commit, and split hash</li>
-<li>Separate metrics, predictions, feature importances, and diagnostic
-  visualizations for every run</li>
+<li>A local artifact directory for fitted models and run artifacts</li>
+<li>Explicit run names and tags</li>
+<li>Feature and split hashes</li>
+<li>Git metadata</li>
 </ul>
-<h3 id="logged-metrics">Logged metrics</h3>
-<p>Each run records:</p>
+<h3 id="logged-data">Logged data</h3>
+<p>Each run logs:</p>
 <ul>
-<li>Train RMSE</li>
-<li>Train MAE</li>
-<li>Train R²</li>
-<li>Test RMSE</li>
-<li>Test MAE</li>
-<li>Test R²</li>
-<li>Training duration</li>
-<li>Prediction duration</li>
-<li>Train/test RMSE gap</li>
-<li>Train/test R² gap</li>
+<li>Algorithm</li>
+<li>Feature version</li>
+<li>Feature names</li>
+<li>Hyperparameter configuration</li>
+<li>Train/test row counts</li>
+<li>Random seed</li>
+<li>Train RMSE, MAE, and R²</li>
+<li>Test RMSE, MAE, and R²</li>
+<li>Training and prediction time</li>
+<li>Generalization gaps</li>
+<li>Predictions</li>
+<li>Feature importance</li>
+<li>Diagnostic figures</li>
+<li>Model artifact</li>
+<li>Configuration and lineage files</li>
 </ul>
-<h3 id="reproducibility">Reproducibility</h3>
-<p>Every run references:</p>
-<ul>
-<li>The same persisted train/test membership</li>
-<li>The same split SHA-256 hash</li>
-<li>The associated feature-data hash</li>
-<li>The Git commit and worktree state</li>
-<li>The full model and feature configuration</li>
-<li>The locked Python environment</li>
-</ul>
-<h3 id="generated-evidence_2">Generated evidence</h3>
-<ul>
-<li><code>reports/mlflow/experiment_comparison.csv</code></li>
-<li><code>reports/mlflow/experiment_comparison.json</code></li>
-<li><code>reports/mlflow/best_run_summary.json</code></li>
-<li><code>reports/mlflow/runs/v1_hp1/</code></li>
-<li><code>reports/mlflow/runs/v1_hp2/</code></li>
-<li><code>reports/mlflow/runs/v2_hp1/</code></li>
-<li><code>reports/mlflow/runs/v2_hp2/</code></li>
-<li><code>reports/figures/experiment_rmse_comparison.png</code></li>
-<li><code>reports/figures/experiment_mae_comparison.png</code></li>
-<li><code>reports/figures/experiment_r2_comparison.png</code></li>
-<li><code>docs/assets/mlflow_four_experiments.png</code></li>
-</ul>
-<p>The local MLflow database and fitted model binaries are reproducible runtime
-state and are intentionally not committed to Git.</p>
-<h3 id="status_7">Status</h3>
-<p>Completed.</p>
+<h3 id="status_8">Status</h3>
+<p>Completed and validated.</p>
 <hr />
 <h2 id="phase-10-automation-and-submission-audit">Phase 10 — Automation and Submission Audit</h2>
 <h3 id="objective_9">Objective</h3>
-<p>Convert the completed workflow into a reproducible, reviewer-friendly
-submission that can be executed and validated with minimal manual work.</p>
-<h3 id="end-to-end-automation">End-to-end automation</h3>
-<p>The complete pipeline is orchestrated through:</p>
-<ul>
-<li><code>scripts/run_pipeline.py</code></li>
-<li><code>make pipeline</code></li>
-</ul>
-<p>The automated sequence executes:</p>
+<p>Make the completed solution executable and reviewable with minimal manual work.</p>
+<h3 id="orchestrator">Orchestrator</h3>
+<pre><code class="language-text">scripts/run_pipeline.py
+</code></pre>
+<p>The orchestrator runs:</p>
 <ol>
-<li>Data ingestion</li>
+<li>Ingestion</li>
 <li>Preprocessing</li>
 <li>Feature Version 1</li>
 <li>Feature Version 2</li>
-<li>Feast registration and retrieval</li>
-<li>Persisted training split creation</li>
-<li>Model-pipeline smoke testing</li>
-<li>Four official MLflow experiments</li>
+<li>Feast apply and retrieval</li>
+<li>Training split creation</li>
+<li>Model smoke test</li>
+<li>Four MLflow experiments</li>
 <li>HTML report generation</li>
-<li>Submission artifact validation</li>
-<li>DVC status validation</li>
+<li>Submission audit</li>
+<li>DVC status</li>
 </ol>
-<p>Execution evidence is stored in:</p>
-<ul>
-<li><code>reports/pipeline/pipeline_run.log</code></li>
-<li><code>reports/pipeline/pipeline_run_summary.json</code></li>
-</ul>
+<p>Run:</p>
+<pre><code class="language-bash">python scripts/run_pipeline.py
+</code></pre>
+<p>Or:</p>
+<pre><code class="language-bash">make pipeline
+</code></pre>
 <h3 id="submission-audit">Submission audit</h3>
-<p>The submission audit verifies:</p>
+<pre><code class="language-text">scripts/verify_submission.py
+</code></pre>
+<p>The audit checks:</p>
 <ul>
-<li>Required source and configuration files</li>
+<li>Required source files</li>
 <li>Required generated artifacts</li>
-<li>Feature-version population alignment</li>
-<li>Target-leakage prevention</li>
-<li>Feast historical and online retrieval</li>
-<li>Persisted train/test split integrity</li>
-<li>Completion of all four experiment combinations</li>
+<li>Feature-version alignment</li>
+<li>Feature differences</li>
+<li>Leakage prevention</li>
+<li>Feast retrieval</li>
+<li>Split integrity</li>
+<li>Four-run experiment completion</li>
 <li>Metric completeness</li>
-<li>Correct best-model selection</li>
-<li>Git tracking of reviewer artifacts</li>
+<li>Best-run selection</li>
+<li>Git tracking</li>
 <li>Source-data portability</li>
 </ul>
-<p>Audit evidence is stored in:</p>
+<h3 id="evidence_1">Evidence</h3>
+<pre><code class="language-text">reports/pipeline/pipeline_run.log
+reports/pipeline/pipeline_run_summary.json
+reports/submission/submission_audit.json
+reports/submission/artifact_inventory.csv
+</code></pre>
+<h3 id="validation-status">Validation status</h3>
+<p>The automation code is implemented. Before final submission, run the complete pipeline,
+strict audit, and clean-clone reproduction test.</p>
+<h3 id="status_9">Status</h3>
+<p>Implemented; final clean-clone validation pending.</p>
+<hr />
+<h2 id="phase-11-model-evaluation-and-comparison">Phase 11 — Model Evaluation and Comparison</h2>
+<h3 id="experiment-results">Experiment results</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Rank</th>
+<th>Run</th>
+<th>Feature version</th>
+<th>Hyperparameters</th>
+<th style="text-align: right;">Train RMSE</th>
+<th style="text-align: right;">Test RMSE</th>
+<th style="text-align: right;">Test MAE</th>
+<th style="text-align: right;">Test R²</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td><code>v2_hp1</code></td>
+<td>v2</td>
+<td>hp1</td>
+<td style="text-align: right;">158.847</td>
+<td style="text-align: right;">165.117</td>
+<td style="text-align: right;">126.901</td>
+<td style="text-align: right;">0.6484</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td><code>v1_hp1</code></td>
+<td>v1</td>
+<td>hp1</td>
+<td style="text-align: right;">163.184</td>
+<td style="text-align: right;">168.286</td>
+<td style="text-align: right;">129.762</td>
+<td style="text-align: right;">0.6348</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td><code>v2_hp2</code></td>
+<td>v2</td>
+<td>hp2</td>
+<td style="text-align: right;">127.456</td>
+<td style="text-align: right;">169.293</td>
+<td style="text-align: right;">130.229</td>
+<td style="text-align: right;">0.6304</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td><code>v1_hp2</code></td>
+<td>v1</td>
+<td>hp2</td>
+<td style="text-align: right;">126.882</td>
+<td style="text-align: right;">170.782</td>
+<td style="text-align: right;">131.367</td>
+<td style="text-align: right;">0.6239</td>
+</tr>
+</tbody>
+</table>
+<h3 id="feature-version-comparison">Feature-version comparison</h3>
+<p>Under HP1:</p>
+<pre><code class="language-text">RMSE improvement: 168.286 - 165.117 = 3.170
+MAE improvement:  129.762 - 126.901 = 2.860
+R² improvement:   0.6484 - 0.6348 = 0.0136
+</code></pre>
+<p>Approximate relative improvements:</p>
 <ul>
-<li><code>reports/submission/submission_audit.json</code></li>
-<li><code>reports/submission/artifact_inventory.csv</code></li>
+<li>RMSE: <code>1.88%</code></li>
+<li>MAE: <code>2.20%</code></li>
 </ul>
-<h3 id="continuous-integration">Continuous integration</h3>
-<p>A GitHub Actions workflow runs:</p>
+<p>Version 2 therefore provided a modest but consistent benefit.</p>
+<h3 id="hyperparameter-comparison">Hyperparameter comparison</h3>
+<p>The HP2 models produced much lower training error but worse test error.</p>
+<table>
+<thead>
+<tr>
+<th>Run</th>
+<th style="text-align: right;">Train RMSE</th>
+<th style="text-align: right;">Test RMSE</th>
+<th style="text-align: right;">Gap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>v2_hp1</code></td>
+<td style="text-align: right;">158.847</td>
+<td style="text-align: right;">165.117</td>
+<td style="text-align: right;">6.270</td>
+</tr>
+<tr>
+<td><code>v2_hp2</code></td>
+<td style="text-align: right;">127.456</td>
+<td style="text-align: right;">169.293</td>
+<td style="text-align: right;">41.837</td>
+</tr>
+<tr>
+<td><code>v1_hp1</code></td>
+<td style="text-align: right;">163.184</td>
+<td style="text-align: right;">168.286</td>
+<td style="text-align: right;">5.102</td>
+</tr>
+<tr>
+<td><code>v1_hp2</code></td>
+<td style="text-align: right;">126.882</td>
+<td style="text-align: right;">170.782</td>
+<td style="text-align: right;">43.900</td>
+</tr>
+</tbody>
+</table>
+<p>The large HP2 gaps are evidence of overfitting.</p>
+<h3 id="runtime-comparison">Runtime comparison</h3>
+<p>HP2 also required substantially more training time without improving test performance.</p>
+<p>The selected model balances:</p>
 <ul>
+<li>Lowest test RMSE</li>
+<li>Lowest test MAE</li>
+<li>Highest test R²</li>
+<li>Small generalization gap</li>
+<li>Lower training cost</li>
+</ul>
+<h3 id="status_10">Status</h3>
+<p>Completed.</p>
+<hr />
+<h2 id="phase-12-automated-pipeline">Phase 12 — Automated Pipeline</h2>
+<h3 id="purpose">Purpose</h3>
+<p>Phase 12 documents the automation implemented in Phase 10.</p>
+<h3 id="entry-points">Entry points</h3>
+<pre><code class="language-bash">python scripts/run_pipeline.py
+make pipeline
+</code></pre>
+<h3 id="useful-partial-run-options">Useful partial-run options</h3>
+<pre><code class="language-bash">python scripts/run_pipeline.py --no-reset
+python scripts/run_pipeline.py --skip-experiments
+python scripts/run_pipeline.py --start-at feast
+python scripts/run_pipeline.py --stop-after model_smoke_test
+</code></pre>
+<h3 id="make-targets">Make targets</h3>
+<pre><code class="language-text">make setup
+make quality
+make ingestion
+make preprocessing
+make features
+make feast
+make split
+make smoke
+make experiments
+make report
+make audit
+make audit-strict
+make pipeline
+</code></pre>
+<h3 id="status_11">Status</h3>
+<p>Implemented.</p>
+<hr />
+<h2 id="phase-13-testing-and-code-quality">Phase 13 — Testing and Code Quality</h2>
+<h3 id="test-coverage">Test coverage</h3>
+<p>Automated tests cover:</p>
+<ul>
+<li>Ingestion</li>
+<li>Preprocessing</li>
+<li>Sentinel handling</li>
+<li>Target construction</li>
+<li>Feature definitions</li>
+<li>Feature Version 1</li>
+<li>Feature Version 2</li>
+<li>Feast entities</li>
+<li>Feast feature views and services</li>
+<li>Feature membership</li>
+<li>Leakage prevention</li>
+<li>Training-dataset alignment</li>
+<li>Deterministic splitting</li>
+<li>Preprocessing pipelines</li>
+<li>Unknown categories</li>
+<li>Model fitting</li>
+<li>Regression metrics</li>
+<li>Random Forest reproducibility</li>
+<li>MLflow matrix validation</li>
+<li>Best-run selection</li>
+</ul>
+<h3 id="quality-tools">Quality tools</h3>
+<pre><code class="language-text">pytest
+ruff format
+ruff check
+GitHub Actions
+</code></pre>
+<p>Run:</p>
+<pre><code class="language-bash">make quality
+</code></pre>
+<p>Equivalent commands:</p>
+<pre><code class="language-bash">ruff format --check src scripts tests feature_repo
+ruff check src scripts tests feature_repo
+pytest -v
+</code></pre>
+<h3 id="continuous-integration">Continuous integration</h3>
+<p>GitHub Actions performs:</p>
+<ul>
+<li>Python 3.11 environment setup</li>
+<li>Dependency installation</li>
 <li>Ruff formatting validation</li>
 <li>Ruff linting</li>
 <li>Unit tests</li>
 <li>Source-level submission audit</li>
 </ul>
-<p>The full model pipeline is not rerun in CI because it includes Feast
-materialization and four full Random Forest experiments. It remains
-reproducible through the committed configurations and pipeline command.</p>
-<h3 id="final-selected-model">Final selected model</h3>
-<p>The final selected model was:</p>
-<ul>
-<li>Feature version: <code>v2</code></li>
-<li>Hyperparameter set: <code>hp1</code></li>
-<li>Algorithm: <code>RandomForestRegressor</code></li>
-<li>Test RMSE: <code>165.1166</code></li>
-<li>Test MAE: <code>126.9015</code></li>
-<li>Test R²: <code>0.6484</code></li>
-</ul>
-<h3 id="status_8">Status</h3>
-<p>Completed.</p>
-<hr />
-<h2 id="phase-11-model-evaluation-and-comparison">Phase 11 — Model Evaluation and Comparison</h2>
-<p>To be completed.</p>
-<hr />
-<h2 id="phase-12-automated-pipeline">Phase 12 — Automated Pipeline</h2>
-<p>To be completed.</p>
-<hr />
-<h2 id="phase-13-testing-and-code-quality">Phase 13 — Testing and Code Quality</h2>
-<p>To be completed.</p>
+<p>The full feature materialization and four-run experiment suite remain local because they
+are more expensive than source-level CI checks.</p>
+<h3 id="status_12">Status</h3>
+<p>Implemented; run the final quality and strict audit commands before submission.</p>
 <hr />
 <h2 id="final-recommendation">Final Recommendation</h2>
-<p>To be completed after experiment evaluation.</p>
+<p>The recommended model is:</p>
+<pre><code class="language-text">Run:                    v2_hp1
+Algorithm:              RandomForestRegressor
+Feature version:        v2
+Hyperparameter set:     hp1
+Test RMSE:              165.1166
+Test MAE:               126.9015
+Test R²:                0.6484
+</code></pre>
+<h3 id="selection-rationale">Selection rationale</h3>
+<p><code>v2_hp1</code> was selected because it:</p>
+<ul>
+<li>Produced the lowest test RMSE</li>
+<li>Produced the lowest test MAE</li>
+<li>Produced the highest test R²</li>
+<li>Used the enhanced feature version</li>
+<li>Maintained a small train/test performance gap</li>
+<li>Trained much faster than HP2</li>
+<li>Avoided the clear overfitting observed in HP2</li>
+</ul>
+<h3 id="error-interpretation">Error interpretation</h3>
+<p>The <code>158.847</code> value is the training RMSE for <code>v2_hp1</code>, not MSE.</p>
+<p>The corresponding training MSE is approximately:</p>
+<pre><code class="language-text">158.847² ≈ 25,232.36
+</code></pre>
+<p>The test RMSE is <code>165.117</code>, and the corresponding test MSE is approximately:</p>
+<pre><code class="language-text">165.117² ≈ 27,263.5
+</code></pre>
+<p>The test MAE of <code>126.901</code> is lower than RMSE because RMSE penalizes large residuals more
+strongly.</p>
+<hr />
+<h2 id="reviewer-artifacts">Reviewer Artifacts</h2>
+<h3 id="feature-artifacts">Feature artifacts</h3>
+<pre><code class="language-text">data/features/v1/athlete_features_v1.parquet
+data/features/v2/athlete_features_v2.parquet
+</code></pre>
+<h3 id="training-artifacts">Training artifacts</h3>
+<pre><code class="language-text">data/training/athlete_training_v1.parquet
+data/training/athlete_training_v2.parquet
+data/splits/athlete_split.parquet
+</code></pre>
+<h3 id="feast-evidence">Feast evidence</h3>
+<pre><code class="language-text">reports/feast/
+</code></pre>
+<h3 id="experiment-evidence">Experiment evidence</h3>
+<pre><code class="language-text">reports/mlflow/experiment_comparison.csv
+reports/mlflow/experiment_comparison.json
+reports/mlflow/best_run_summary.json
+reports/mlflow/runs/
+</code></pre>
+<h3 id="figures">Figures</h3>
+<pre><code class="language-text">reports/figures/
+</code></pre>
+<h3 id="final-report">Final report</h3>
+<pre><code class="language-text">docs/assignment_2_rollout.html
+</code></pre>
+<hr />
+<h2 id="reproduction-instructions">Reproduction Instructions</h2>
+<h3 id="environment">Environment</h3>
+<pre><code class="language-bash">python3.11 -m venv .venv
+source .venv/bin/activate
+
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python -m pip install -e .
+</code></pre>
+<h3 id="retrieve-source-data">Retrieve source data</h3>
+<pre><code class="language-bash">dvc pull
+</code></pre>
+<h3 id="run-quality-checks">Run quality checks</h3>
+<pre><code class="language-bash">make quality
+</code></pre>
+<h3 id="run-the-full-pipeline">Run the full pipeline</h3>
+<pre><code class="language-bash">make pipeline
+</code></pre>
+<h3 id="run-the-final-audit">Run the final audit</h3>
+<pre><code class="language-bash">python scripts/verify_submission.py
+</code></pre>
+<h3 id="run-the-strict-audit">Run the strict audit</h3>
+<pre><code class="language-bash">make audit-strict
+</code></pre>
 </body>
 </html>

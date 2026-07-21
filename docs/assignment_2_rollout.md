@@ -1,91 +1,149 @@
-# ADSP 31021 Assignment 2 — Phase-Wise Rollout
+# Assignment 2 Rollout Report — Feature Store and Experiment Tracking
 
-## Project Overview
+## Executive Summary
 
-**Repository:** `mlops-feature-store`
+This project implements a reproducible MLOps workflow for predicting athlete
+`total_lift` using the provided athlete dataset.
 
-**Objective:** Build a reproducible machine-learning pipeline using Feast for feature
-management, MLflow for experiment tracking, DVC for data versioning, and Scikit-learn
-for model development.
+The completed solution includes:
+
+- DVC-based source-data versioning
+- Modular ingestion and preprocessing
+- Two managed feature versions
+- Feast historical and online feature retrieval
+- One persisted train/test split shared by all experiments
+- A reusable Scikit-learn preprocessing and regression pipeline
+- Four manually configured Random Forest experiments
+- MLflow experiment tracking
+- Model comparison and final recommendation
+- Automated pipeline orchestration
+- Testing, code-quality checks, and submission auditing
+
+The best-performing model was `v2_hp1`, with:
+
+- Test RMSE: `165.1166`
+- Test MAE: `126.9015`
+- Test R²: `0.6484`
+
+The enhanced feature set improved generalization, while the larger HP2 model
+configurations showed clear overfitting.
 
 ---
 
-## Assignment Requirement Mapping
+## Project Objective
 
-| Requirement | Implementation |
-|---|---|
-| Dataset selection | Provided `athletes.csv` dataset |
-| MLOps platform | MLflow |
-| End-to-end pipeline | Modular Python pipeline |
-| Feature store | Feast |
-| Feature versioning | Feature Version 1 and Feature Version 2 |
-| Experimentation | Four Random Forest experiments |
-| Reproducibility | Git, DVC, requirements, configuration, and fixed seed |
-| Documentation | README and phase-wise HTML report |
+The objective is to build a production-style machine-learning workflow that predicts an
+athlete's combined lift total while demonstrating feature versioning and experiment
+tracking.
+
+The target is calculated as:
+
+```text
+total_lift = deadlift + candj + snatch + backsq
+```
+
+The four component columns are excluded from model features because they directly define
+the target.
 
 ---
 
-## Phase 1 — Repository and Environment Setup
+## Solution Architecture
+
+```text
+athletes.zip
+    |
+    v
+DVC-tracked source data
+    |
+    v
+Ingestion and schema validation
+    |
+    v
+Preprocessing and target construction
+    |
+    +-------------------------+
+    |                         |
+    v                         v
+Feature Version 1     Feature Version 2
+    |                         |
+    +------------+------------+
+                 |
+                 v
+          Feast feature store
+   historical + online retrieval
+                 |
+                 v
+       Persisted train/test split
+                 |
+                 v
+   Scikit-learn preprocessing pipeline
+                 |
+                 v
+ Four Random Forest experiment combinations
+                 |
+                 v
+       MLflow tracking and comparison
+                 |
+                 v
+  Reports, HTML documentation, and audit
+```
+
+---
+
+## Phase Status Overview
+
+| Phase | Description | Status |
+|---:|---|---|
+| 1 | Repository and environment foundation | Completed |
+| 2 | Source-data versioning and ingestion | Completed |
+| 3 | Preprocessing and target construction | Completed |
+| 4 | Feature Version 1 | Completed |
+| 5 | Feature Version 2 | Completed |
+| 6 | Feast feature store | Completed |
+| 7 | Reproducible training split | Completed |
+| 8 | Scikit-learn model pipeline | Completed |
+| 9 | MLflow experiments | Completed and validated |
+| 10 | Automation and submission audit | Implemented; final clean-clone validation pending |
+| 11 | Model evaluation and comparison | Completed |
+| 12 | Automated pipeline summary | Implemented |
+| 13 | Testing and code quality | Implemented; final strict audit pending |
+
+Phases 11–13 consolidate and document work implemented during earlier technical phases.
+They are not additional model-training requirements.
+
+---
+
+## Phase 1 — Repository and Environment Foundation
 
 ### Objective
 
-Create a modular VS Code repository with an isolated Python environment and
-reproducible dependency management.
-
-### Completed work
-
-- Created the Git repository.
-- Created a Python virtual environment.
-- Added dependency management.
-- Configured Ruff and Pytest.
-- Initialized DVC.
-- Created the modular source-code structure.
-
-### Status
-
-Completed.
-
----
-
-## Phase 2 — Dataset Ingestion and Profiling
-
-### Objective
-
-Create an immutable, versioned source dataset and generate reproducible
-raw-data validation and profiling artifacts.
+Create a modular, reproducible Python project rather than a notebook-only solution.
 
 ### Implementation
 
-- The original athlete ZIP archive is stored under `data/source/`.
-- DVC tracks the archive without committing the large file to Git.
-- The ingestion module extracts the raw CSV without modifying its contents.
-- Required columns are validated automatically.
-- Profiling generates schema, missing-value, numerical, and categorical reports.
+The repository uses:
 
-### Generated artifacts
+- Python 3.11
+- Editable package installation
+- `src/` package layout
+- YAML configuration
+- Git version control
+- DVC
+- Pytest
+- Ruff
+- Make
+- GitHub Actions
 
-- `reports/validation/raw_profile.json`
-- `reports/validation/raw_schema.csv`
-- `reports/validation/raw_missing_values.csv`
-- `reports/validation/raw_numeric_summary.csv`
-- `reports/validation/raw_categorical_summary.csv`
-- `reports/figures/raw_missing_values.png`
+The repository separates:
 
-### Data-handling assumptions
-
-- The source archive contains exactly one CSV file.
-- The source archive is treated as immutable.
-- No cleaning or feature engineering occurs during ingestion.
-- `athlete_id` is retained as the candidate Feast entity key.
-- Data-quality issues will be handled explicitly in Phase 3.
-
-### Validation
-
-- The ingestion process completed successfully.
-- Required columns were validated.
-- Automated ingestion tests passed.
-- Ruff formatting and lint checks passed.
-- DVC reports that the source dataset is up to date.
+- Configuration
+- Source code
+- Feature-store definitions
+- Execution scripts
+- Tests
+- Data artifacts
+- Reports
+- Documentation
 
 ### Status
 
@@ -93,110 +151,133 @@ Completed.
 
 ---
 
-## Phase 3 — Preprocessing and Label Construction
+## Phase 2 — Source-Data Versioning and Ingestion
 
 ### Objective
 
-Create a deterministic processed dataset, Feast-compatible entity keys,
-event timestamps, and a regression label while preventing target leakage.
+Track the original dataset and materialize a validated raw-data layer.
 
-### Processing decisions
-
-- `athlete_id` is retained as the Feast entity key.
-- The original retrieval timestamp is used when available.
-- A deterministic fallback timestamp is generated for missing timestamps.
-- Invalid survey responses are converted to missing values.
-- Numerical values are converted using safe coercion.
-- Implausible numerical values are replaced with missing values.
-- Records missing any target component are excluded.
-- Duplicate athlete records retain the latest observation.
-- Missing predictor values are retained for training-only imputation.
-
-### Target definition
-
-`total_lift` is calculated as:
+### Source data
 
 ```text
-deadlift + candj + snatch + backsq
+data/source/athletes.zip
 ```
 
-### Target sentinel-value correction
+The source ZIP is tracked using DVC metadata.
 
-Exploratory validation identified repeated lift-component values of `1`,
-including records where all four lift components were equal to `1`. This
-pattern was interpreted as a source-system placeholder rather than a valid
-measurement.
+### Raw dataset profile
 
-The value `1` was therefore configured as a sentinel value for `deadlift`,
-`candj`, `snatch`, and `backsq`. The preprocessing pipeline replaced 135
-sentinel component values with missing values. Because multiple sentinel
-values occurred within some records, this resulted in 37 additional athlete
-records being excluded from label construction.
+- Rows: `423,006`
+- Columns: `27`
 
-After correction:
+### Ingestion responsibilities
 
-- Processed rows: 81,707
-- Label rows: 81,707
-- Sentinel values remaining: 0
-- Total-lift range: 8 to 2,367
+- Locate the source ZIP
+- Extract the athlete CSV
+- Validate that data is readable
+- Persist a reproducible raw artifact
+- Produce reviewer-facing ingestion evidence
 
-A broad lower-target cutoff was intentionally avoided to preserve potentially
-valid beginner-athlete records.
+### Status
+
+Completed.
+
+---
+
+## Phase 3 — Preprocessing and Target Construction
+
+### Objective
+
+Create a model-ready population while preserving defensible data-cleaning decisions.
+
+### Target construction
+
+```text
+total_lift = deadlift + candj + snatch + backsq
+```
+
+### Sentinel handling
+
+The value `1` was explicitly treated as a sentinel in lift-component fields.
+
+| Component | Sentinel replacements |
+|---|---:|
+| `deadlift` | 33 |
+| `candj` | 35 |
+| `snatch` | 33 |
+| `backsq` | 34 |
+| **Total** | **135** |
+
+### Row counts
+
+| Measure | Count |
+|---|---:|
+| Initial rows | 423,006 |
+| Missing athlete IDs | 3 |
+| Missing or invalid target rows | 341,296 |
+| Final processed rows | 81,707 |
+
+### Final target profile
+
+- Minimum: `8`
+- Maximum: `2,367`
+- Mean: approximately `985.455`
+- Median: `1,000`
+
+### Lower-tail decision
+
+A small number of very low target values remained after sentinel replacement. These rows
+were retained because there was not enough documented evidence to classify them as
+sentinels or corrupted values.
+
+This avoids introducing an arbitrary lower cutoff solely to improve model metrics.
+
+### Leakage prevention
+
+The following target-component columns are excluded from the model matrix:
+
+```text
+deadlift
+candj
+snatch
+backsq
+```
+
+### Status
+
+Completed.
+
 ---
 
 ## Phase 4 — Feature Version 1
 
 ### Objective
 
-Create a stable baseline feature version for athlete-strength modeling and
-prepare it as the offline source for later Feast registration.
+Create a baseline feature set managed independently from the processed label data.
 
-### Feature definition
+### Features
 
-Feature Version 1 contains:
+```text
+age
+weight
+height
+gender
+region
+```
 
-- `age`
-- `weight`
-- `height`
-- `gender`
-- `region`
+### Characteristics
 
-The table also contains the Feast-required entity and timestamp fields:
+- Feature count: `5`
+- Population: `81,707`
+- Entity key: `athlete_id`
+- Timestamp: `event_timestamp`
+- No target or target-component columns
 
-- `athlete_id`
-- `event_timestamp`
+### Artifact
 
-### Design rationale
-
-Version 1 intentionally uses a small, interpretable set of demographic and
-physical features. Higher-cardinality survey responses are excluded from the
-baseline and will be normalized or engineered in Feature Version 2.
-
-Missing predictor values are preserved. Imputation and encoding are deferred
-to the Scikit-learn training pipeline so that those transformations are fitted
-only on the training partition.
-
-### Leakage prevention
-
-The following target-related columns are explicitly prohibited:
-
-- `total_lift`
-- `deadlift`
-- `candj`
-- `snatch`
-- `backsq`
-
-### Generated artifacts
-
-- `data/features/v1/athlete_features_v1.parquet`
-- `reports/validation/feature_v1_manifest.json`
-- `reports/validation/feature_v1_missingness.csv`
-- `reports/validation/feature_v1_schema.csv`
-
-### Version evidence
-
-The Version 1 manifest records the feature list, data types, entity count,
-missing-value counts, schema hash, and deterministic feature-data hash.
+```text
+data/features/v1/athlete_features_v1.parquet
+```
 
 ### Status
 
@@ -208,58 +289,43 @@ Completed.
 
 ### Objective
 
-Create an enhanced feature version that preserves the Version 1 entity
-population while adding deterministic engineered features.
+Create an enhanced feature version while preserving the same entity and timestamp
+population.
 
-### Version lineage
+### Added features
 
-Feature Version 2 is derived from Feature Version 1 and contains all five
-baseline features:
+#### BMI
 
-- `age`
-- `weight`
-- `height`
-- `gender`
-- `region`
+```text
+bmi = 703 × weight / height²
+```
 
-It adds:
+#### Squared age
 
-- `bmi`
-- `age_squared`
-- `weight_height_ratio`
+```text
+age_squared = age²
+```
 
-### Feature engineering
+#### Weight-to-height ratio
 
-BMI was calculated using the imperial-unit formula because weight is measured
-in pounds and height is measured in inches:
+```text
+weight_height_ratio = weight / height
+```
 
-`bmi = 703 × weight / height²`
+### Version comparison
 
-The remaining transformations were:
+| Version | Feature count | Population |
+|---|---:|---:|
+| v1 | 5 | 81,707 |
+| v2 | 8 | 81,707 |
 
-- `age_squared = age²`
-- `weight_height_ratio = weight / height`
+Version 2 is a strict extension of Version 1. No baseline feature was removed.
 
-Missing source values were intentionally preserved. No feature imputation or
-categorical encoding was performed during feature generation. Those operations
-will be fitted only on the training partition in the model pipeline.
+### Artifact
 
-### Version integrity
-
-Feature Versions 1 and 2 contain the same 81,707 athlete entities and aligned
-event timestamps. Version 2 adds three features and removes none.
-
-Both versions have separate Parquet artifacts, manifests, schemas,
-missingness reports, and deterministic data hashes.
-
-### Generated artifacts
-
-- `data/features/v2/athlete_features_v2.parquet`
-- `reports/validation/feature_v2_manifest.json`
-- `reports/validation/feature_v2_missingness.csv`
-- `reports/validation/feature_v2_schema.csv`
-- `reports/validation/feature_v2_engineering_summary.csv`
-- `reports/validation/feature_version_comparison.json`
+```text
+data/features/v2/athlete_features_v2.parquet
+```
 
 ### Status
 
@@ -271,71 +337,65 @@ Completed.
 
 ### Objective
 
-Register both feature versions in Feast and demonstrate historical and online
-feature retrieval.
+Register both feature versions and validate offline and online retrieval.
 
-### Local architecture
-
-The Feast deployment uses:
-
-- Parquet files as the offline feature sources
-- A local Feast registry
-- SQLite as the online feature store
-- `athlete_id` as the entity join key
-- `event_timestamp` for point-in-time feature retrieval
-
-### Registered objects
+### Feast objects
 
 Entity:
 
-- `athlete`
+```text
+athlete
+```
+
+Join key:
+
+```text
+athlete_id
+```
 
 Feature views:
 
-- `athlete_features_v1`
-- `athlete_features_v2`
+```text
+athlete_features_v1
+athlete_features_v2
+```
 
 Feature services:
 
-- `athlete_strength_v1`
-- `athlete_strength_v2`
-
-Separate feature services provide explicit model-centric version tracking.
+```text
+athlete_strength_v1
+athlete_strength_v2
+```
 
 ### Historical retrieval
 
-The Phase 3 label artifact was supplied to Feast as an entity dataframe
-containing:
+Feast point-in-time joins produced:
 
-- `athlete_id`
-- `event_timestamp`
-- `total_lift`
-
-Feast retrieved point-in-time features for all 81,707 eligible athletes for
-both feature versions. The complete generated datasets are stored locally
-under `data/training/`.
+| Dataset | Rows |
+|---|---:|
+| Version 1 historical training table | 81,707 |
+| Version 2 historical training table | 81,707 |
 
 ### Online retrieval
 
-Both feature views were materialized from their Parquet offline sources into
-the SQLite online store. Online retrieval was validated for five athlete
-entities using both versioned feature services.
+Both feature services were materialized to the local online store and queried for sample
+athletes.
 
-### Committed evidence
+### Reviewer evidence
 
-- `feature_repo/feature_store.yaml`
-- `feature_repo/feature_definitions.py`
-- `reports/feast/feast_apply_output.txt`
-- `reports/feast/feature_registry_summary.json`
-- `reports/feast/historical_v1_sample.csv`
-- `reports/feast/historical_v2_sample.csv`
-- `reports/feast/online_retrieval_sample.json`
-- `reports/feast/feast_validation_summary.json`
+```text
+reports/feast/feast_apply_output.txt
+reports/feast/feature_registry_summary.json
+reports/feast/historical_v1_sample.csv
+reports/feast/historical_v2_sample.csv
+reports/feast/online_retrieval_sample.json
+reports/feast/feast_validation_summary.json
+```
 
-The generated registry and online SQLite database are intentionally excluded
-because they can be reproduced by running:
+### Runtime state
 
-`python scripts/run_feast.py --reset`
+Local registry and online-store SQLite files are ignored because they can be rebuilt from
+the committed definitions and feature data.
 
 ### Status
 
@@ -347,53 +407,41 @@ Completed.
 
 ### Objective
 
-Prepare aligned versioned training datasets and create one deterministic
-train/test split that will be reused across all four experiments.
+Use one deterministic evaluation population across all four experiments.
 
-### Training datasets
+### Configuration
 
-The training datasets were generated through Feast historical retrieval:
-
-- `data/training/athlete_training_v1.parquet`
-- `data/training/athlete_training_v2.parquet`
-
-Both datasets contain the same athlete entities, event timestamps, and
-`total_lift` labels. Version 1 contains five model features, while Version 2
-contains eight.
-
-### Split strategy
-
-A single 80/20 train/test split was generated using:
-
+- Test size: `0.20`
 - Random state: `42`
-- Shuffling: enabled
-- Entity-level split key: `athlete_id`
+- Shuffle: enabled
+- Entity split key: `athlete_id`
 
-The split membership is persisted as:
+### Split results
 
-- `data/splits/athlete_split.parquet`
+| Partition | Entities |
+|---|---:|
+| Train | 65,365 |
+| Test | 16,342 |
+| Total | 81,707 |
 
-This artifact will be reused for every experiment, ensuring that differences
-in model performance are attributable to feature versions or hyperparameter
-configurations rather than different evaluation populations.
+### Persisted artifact
 
-### Leakage prevention
+```text
+data/splits/athlete_split.parquet
+```
 
-The source target components were explicitly prohibited from the training
-datasets:
+### Rationale
 
-- `deadlift`
-- `candj`
-- `snatch`
-- `backsq`
+The same membership is applied to both feature versions and both hyperparameter sets.
+This prevents different split populations from confounding the model comparison.
 
-The only label available to the model pipeline is `total_lift`.
+### Evidence
 
-### Generated evidence
-
-- `reports/validation/training_split_summary.json`
-- `reports/validation/training_dataset_missingness.csv`
-- `reports/figures/training_split_target_distribution.png`
+```text
+reports/validation/training_split_summary.json
+reports/validation/training_dataset_missingness.csv
+reports/figures/training_split_target_distribution.png
+```
 
 ### Status
 
@@ -403,131 +451,124 @@ Completed.
 
 ## Phase 8 — Scikit-learn Model Pipeline
 
-## Phase 8 — Scikit-learn Model Pipeline
-
 ### Objective
 
-Build one reusable Scikit-learn pipeline that can be applied consistently
-across both feature versions and both hyperparameter configurations.
+Build one reusable model pipeline for both feature versions and both hyperparameter
+configurations.
 
-### Preprocessing
+### Numerical preprocessing
 
-Numerical features use median imputation. Categorical features use
-most-frequent imputation followed by one-hot encoding.
+- Median imputation
 
-All preprocessing components are contained within the fitted Scikit-learn
-pipeline. The pipeline is fitted only on the training partition, preventing
-test-set information from influencing imputation statistics or category
-discovery.
+### Categorical preprocessing
 
-Unknown categorical values are ignored during transformation so that
-previously unseen test or serving values do not cause prediction failures.
+- Most-frequent imputation
+- One-hot encoding
+- Unknown categories ignored
+
+### Leakage protection
+
+All preprocessing is fitted inside the Scikit-learn pipeline using training data only.
 
 ### Estimator
 
-The selected algorithm is `RandomForestRegressor`.
+```text
+RandomForestRegressor
+```
 
-Two manually configured hyperparameter sets are defined:
+### HP1
 
-- `hp1`: 100 estimators, maximum depth 12, minimum leaf size 5
-- `hp2`: 300 estimators, maximum depth 20, minimum leaf size 2
+```yaml
+n_estimators: 100
+max_depth: 12
+min_samples_split: 2
+min_samples_leaf: 5
+max_features: sqrt
+bootstrap: true
+```
 
-No automated hyperparameter tuning or AutoML is used.
+### HP2
+
+```yaml
+n_estimators: 300
+max_depth: 20
+min_samples_split: 2
+min_samples_leaf: 2
+max_features: 1.0
+bootstrap: true
+```
+
+No AutoML or automated hyperparameter tuning is used.
 
 ### Smoke test
 
-A deterministic subset of 10,000 training records and 2,500 test records was
-used to validate the complete model pipeline before experiment tracking.
+A deterministic subset was used to validate:
 
-The smoke test is an infrastructure check and is not counted as one of the
-four official experiments.
+- Data split loading
+- Imputation
+- Encoding
+- Training
+- Prediction
+- Metric calculation
+- Feature importance extraction
+- Plot generation
 
-### Generated evidence
-
-- `reports/validation/model_pipeline_smoke_summary.json`
-- `reports/validation/model_pipeline_smoke_predictions.csv`
-- `reports/validation/model_pipeline_smoke_feature_importance.csv`
-- `reports/validation/model_pipeline_structure.txt`
-- `reports/figures/model_pipeline_smoke_actual_vs_predicted.png`
+The smoke test is not one of the four official experiments.
 
 ### Status
 
 Completed.
+
 ---
 
 ## Phase 9 — MLflow Experiment Tracking
 
 ### Objective
 
-Execute and track the four required model experiments using the same
-Random Forest algorithm and the same persisted train/test split.
+Track the required two-by-two experiment matrix.
 
-### Experiment matrix
+### Official runs
 
 | Run | Feature version | Hyperparameter set |
 |---|---|---|
-| `v1_hp1` | Version 1 | HP1 |
-| `v1_hp2` | Version 1 | HP2 |
-| `v2_hp1` | Version 2 | HP1 |
-| `v2_hp2` | Version 2 | HP2 |
+| `v1_hp1` | v1 | hp1 |
+| `v1_hp2` | v1 | hp2 |
+| `v2_hp1` | v2 | hp1 |
+| `v2_hp2` | v2 | hp2 |
 
 ### Tracking architecture
 
 MLflow uses:
 
 - SQLite for experiment and run metadata
-- A local filesystem artifact store for fitted models
-- Explicit tags for feature version, hyperparameter configuration,
-  Git commit, and split hash
-- Separate metrics, predictions, feature importances, and diagnostic
-  visualizations for every run
+- A local artifact directory for fitted models and run artifacts
+- Explicit run names and tags
+- Feature and split hashes
+- Git metadata
 
-### Logged metrics
+### Logged data
 
-Each run records:
+Each run logs:
 
-- Train RMSE
-- Train MAE
-- Train R²
-- Test RMSE
-- Test MAE
-- Test R²
-- Training duration
-- Prediction duration
-- Train/test RMSE gap
-- Train/test R² gap
-
-### Reproducibility
-
-Every run references:
-
-- The same persisted train/test membership
-- The same split SHA-256 hash
-- The associated feature-data hash
-- The Git commit and worktree state
-- The full model and feature configuration
-- The locked Python environment
-
-### Generated evidence
-
-- `reports/mlflow/experiment_comparison.csv`
-- `reports/mlflow/experiment_comparison.json`
-- `reports/mlflow/best_run_summary.json`
-- `reports/mlflow/runs/v1_hp1/`
-- `reports/mlflow/runs/v1_hp2/`
-- `reports/mlflow/runs/v2_hp1/`
-- `reports/mlflow/runs/v2_hp2/`
-- `reports/figures/experiment_rmse_comparison.png`
-- `reports/figures/experiment_mae_comparison.png`
-- `reports/figures/experiment_r2_comparison.png`
-- `docs/assets/mlflow_four_experiments.png`
-
-The local MLflow database and fitted model binaries are reproducible runtime
-state and are intentionally not committed to Git.
+- Algorithm
+- Feature version
+- Feature names
+- Hyperparameter configuration
+- Train/test row counts
+- Random seed
+- Train RMSE, MAE, and R²
+- Test RMSE, MAE, and R²
+- Training and prediction time
+- Generalization gaps
+- Predictions
+- Feature importance
+- Diagnostic figures
+- Model artifact
+- Configuration and lineage files
 
 ### Status
 
-Completed.
+Completed and validated.
 
 ---
 
@@ -535,79 +576,133 @@ Completed.
 
 ### Objective
 
-Convert the completed workflow into a reproducible, reviewer-friendly
-submission that can be executed and validated with minimal manual work.
+Make the completed solution executable and reviewable with minimal manual work.
 
-### End-to-end automation
+### Orchestrator
 
-The complete pipeline is orchestrated through:
+```text
+scripts/run_pipeline.py
+```
 
-- `scripts/run_pipeline.py`
-- `make pipeline`
+The orchestrator runs:
 
-The automated sequence executes:
-
-1. Data ingestion
+1. Ingestion
 2. Preprocessing
 3. Feature Version 1
 4. Feature Version 2
-5. Feast registration and retrieval
-6. Persisted training split creation
-7. Model-pipeline smoke testing
-8. Four official MLflow experiments
+5. Feast apply and retrieval
+6. Training split creation
+7. Model smoke test
+8. Four MLflow experiments
 9. HTML report generation
-10. Submission artifact validation
-11. DVC status validation
+10. Submission audit
+11. DVC status
 
-Execution evidence is stored in:
+Run:
 
-- `reports/pipeline/pipeline_run.log`
-- `reports/pipeline/pipeline_run_summary.json`
+```bash
+python scripts/run_pipeline.py
+```
+
+Or:
+
+```bash
+make pipeline
+```
 
 ### Submission audit
 
-The submission audit verifies:
+```text
+scripts/verify_submission.py
+```
 
-- Required source and configuration files
+The audit checks:
+
+- Required source files
 - Required generated artifacts
-- Feature-version population alignment
-- Target-leakage prevention
-- Feast historical and online retrieval
-- Persisted train/test split integrity
-- Completion of all four experiment combinations
+- Feature-version alignment
+- Feature differences
+- Leakage prevention
+- Feast retrieval
+- Split integrity
+- Four-run experiment completion
 - Metric completeness
-- Correct best-model selection
-- Git tracking of reviewer artifacts
+- Best-run selection
+- Git tracking
 - Source-data portability
 
-Audit evidence is stored in:
+### Evidence
 
-- `reports/submission/submission_audit.json`
-- `reports/submission/artifact_inventory.csv`
+```text
+reports/pipeline/pipeline_run.log
+reports/pipeline/pipeline_run_summary.json
+reports/submission/submission_audit.json
+reports/submission/artifact_inventory.csv
+```
 
-### Continuous integration
+### Validation status
 
-A GitHub Actions workflow runs:
+The automation code is implemented. Before final submission, run the complete pipeline,
+strict audit, and clean-clone reproduction test.
 
-- Ruff formatting validation
-- Ruff linting
-- Unit tests
-- Source-level submission audit
+### Status
 
-The full model pipeline is not rerun in CI because it includes Feast
-materialization and four full Random Forest experiments. It remains
-reproducible through the committed configurations and pipeline command.
+Implemented; final clean-clone validation pending.
 
-### Final selected model
+---
 
-The final selected model was:
+## Phase 11 — Model Evaluation and Comparison
 
-- Feature version: `v2`
-- Hyperparameter set: `hp1`
-- Algorithm: `RandomForestRegressor`
-- Test RMSE: `165.1166`
-- Test MAE: `126.9015`
-- Test R²: `0.6484`
+### Experiment results
+
+| Rank | Run | Feature version | Hyperparameters | Train RMSE | Test RMSE | Test MAE | Test R² |
+|---:|---|---|---|---:|---:|---:|---:|
+| 1 | `v2_hp1` | v2 | hp1 | 158.847 | 165.117 | 126.901 | 0.6484 |
+| 2 | `v1_hp1` | v1 | hp1 | 163.184 | 168.286 | 129.762 | 0.6348 |
+| 3 | `v2_hp2` | v2 | hp2 | 127.456 | 169.293 | 130.229 | 0.6304 |
+| 4 | `v1_hp2` | v1 | hp2 | 126.882 | 170.782 | 131.367 | 0.6239 |
+
+### Feature-version comparison
+
+Under HP1:
+
+```text
+RMSE improvement: 168.286 - 165.117 = 3.170
+MAE improvement:  129.762 - 126.901 = 2.860
+R² improvement:   0.6484 - 0.6348 = 0.0136
+```
+
+Approximate relative improvements:
+
+- RMSE: `1.88%`
+- MAE: `2.20%`
+
+Version 2 therefore provided a modest but consistent benefit.
+
+### Hyperparameter comparison
+
+The HP2 models produced much lower training error but worse test error.
+
+| Run | Train RMSE | Test RMSE | Gap |
+|---|---:|---:|---:|
+| `v2_hp1` | 158.847 | 165.117 | 6.270 |
+| `v2_hp2` | 127.456 | 169.293 | 41.837 |
+| `v1_hp1` | 163.184 | 168.286 | 5.102 |
+| `v1_hp2` | 126.882 | 170.782 | 43.900 |
+
+The large HP2 gaps are evidence of overfitting.
+
+### Runtime comparison
+
+HP2 also required substantially more training time without improving test performance.
+
+The selected model balances:
+
+- Lowest test RMSE
+- Lowest test MAE
+- Highest test R²
+- Small generalization gap
+- Lower training cost
 
 ### Status
 
@@ -615,24 +710,254 @@ Completed.
 
 ---
 
-## Phase 11 — Model Evaluation and Comparison
-
-To be completed.
-
----
-
 ## Phase 12 — Automated Pipeline
 
-To be completed.
+### Purpose
+
+Phase 12 documents the automation implemented in Phase 10.
+
+### Entry points
+
+```bash
+python scripts/run_pipeline.py
+make pipeline
+```
+
+### Useful partial-run options
+
+```bash
+python scripts/run_pipeline.py --no-reset
+python scripts/run_pipeline.py --skip-experiments
+python scripts/run_pipeline.py --start-at feast
+python scripts/run_pipeline.py --stop-after model_smoke_test
+```
+
+### Make targets
+
+```text
+make setup
+make quality
+make ingestion
+make preprocessing
+make features
+make feast
+make split
+make smoke
+make experiments
+make report
+make audit
+make audit-strict
+make pipeline
+```
+
+### Status
+
+Implemented.
 
 ---
 
 ## Phase 13 — Testing and Code Quality
 
-To be completed.
+### Test coverage
+
+Automated tests cover:
+
+- Ingestion
+- Preprocessing
+- Sentinel handling
+- Target construction
+- Feature definitions
+- Feature Version 1
+- Feature Version 2
+- Feast entities
+- Feast feature views and services
+- Feature membership
+- Leakage prevention
+- Training-dataset alignment
+- Deterministic splitting
+- Preprocessing pipelines
+- Unknown categories
+- Model fitting
+- Regression metrics
+- Random Forest reproducibility
+- MLflow matrix validation
+- Best-run selection
+
+### Quality tools
+
+```text
+pytest
+ruff format
+ruff check
+GitHub Actions
+```
+
+Run:
+
+```bash
+make quality
+```
+
+Equivalent commands:
+
+```bash
+ruff format --check src scripts tests feature_repo
+ruff check src scripts tests feature_repo
+pytest -v
+```
+
+### Continuous integration
+
+GitHub Actions performs:
+
+- Python 3.11 environment setup
+- Dependency installation
+- Ruff formatting validation
+- Ruff linting
+- Unit tests
+- Source-level submission audit
+
+The full feature materialization and four-run experiment suite remain local because they
+are more expensive than source-level CI checks.
+
+### Status
+
+Implemented; run the final quality and strict audit commands before submission.
 
 ---
 
 ## Final Recommendation
 
-To be completed after experiment evaluation.
+The recommended model is:
+
+```text
+Run:                    v2_hp1
+Algorithm:              RandomForestRegressor
+Feature version:        v2
+Hyperparameter set:     hp1
+Test RMSE:              165.1166
+Test MAE:               126.9015
+Test R²:                0.6484
+```
+
+### Selection rationale
+
+`v2_hp1` was selected because it:
+
+- Produced the lowest test RMSE
+- Produced the lowest test MAE
+- Produced the highest test R²
+- Used the enhanced feature version
+- Maintained a small train/test performance gap
+- Trained much faster than HP2
+- Avoided the clear overfitting observed in HP2
+
+### Error interpretation
+
+The `158.847` value is the training RMSE for `v2_hp1`, not MSE.
+
+The corresponding training MSE is approximately:
+
+```text
+158.847² ≈ 25,232.36
+```
+
+The test RMSE is `165.117`, and the corresponding test MSE is approximately:
+
+```text
+165.117² ≈ 27,263.5
+```
+
+The test MAE of `126.901` is lower than RMSE because RMSE penalizes large residuals more
+strongly.
+
+---
+
+## Reviewer Artifacts
+
+### Feature artifacts
+
+```text
+data/features/v1/athlete_features_v1.parquet
+data/features/v2/athlete_features_v2.parquet
+```
+
+### Training artifacts
+
+```text
+data/training/athlete_training_v1.parquet
+data/training/athlete_training_v2.parquet
+data/splits/athlete_split.parquet
+```
+
+### Feast evidence
+
+```text
+reports/feast/
+```
+
+### Experiment evidence
+
+```text
+reports/mlflow/experiment_comparison.csv
+reports/mlflow/experiment_comparison.json
+reports/mlflow/best_run_summary.json
+reports/mlflow/runs/
+```
+
+### Figures
+
+```text
+reports/figures/
+```
+
+### Final report
+
+```text
+docs/assignment_2_rollout.html
+```
+
+---
+
+## Reproduction Instructions
+
+### Environment
+
+```bash
+python3.11 -m venv .venv
+source .venv/bin/activate
+
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python -m pip install -e .
+```
+
+### Retrieve source data
+
+```bash
+dvc pull
+```
+
+### Run quality checks
+
+```bash
+make quality
+```
+
+### Run the full pipeline
+
+```bash
+make pipeline
+```
+
+### Run the final audit
+
+```bash
+python scripts/verify_submission.py
+```
+
+### Run the strict audit
+
+```bash
+make audit-strict
+```
