@@ -25,7 +25,7 @@ scripts/run_feast.py,True,19022,True,.py
 scripts/run_training_split.py,True,8999,True,.py
 scripts/run_model_pipeline.py,True,7307,True,.py
 scripts/run_experiments.py,True,21038,True,.py
-scripts/run_pipeline.py,True,9166,False,.py
+scripts/run_pipeline.py,True,9166,True,.py
 scripts/build_report.py,True,2256,True,.py
 tests/test_ingestion.py,True,1703,True,.py
 tests/test_preprocessing.py,True,11412,True,.py

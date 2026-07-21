@@ -1,10 +1,10 @@
 {
   "status": "PASS",
   "source_only": false,
-  "require_git_tracked": false,
-  "require_source_portable": false,
-  "check_count": 86,
-  "passed_check_count": 86,
+  "require_git_tracked": true,
+  "require_source_portable": true,
+  "check_count": 165,
+  "passed_check_count": 165,
   "failed_check_count": 0,
   "checks": [
     {
@@ -522,6 +522,480 @@
       "category": "mlflow",
       "status": "PASS",
       "detail": "selected=v2_hp1, expected=v2_hp1"
+    },
+    {
+      "name": "git_tracked:README.md",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:requirements.in",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:requirements.txt",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:pyproject.toml",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:.gitignore",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:configs/pipeline.yaml",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:configs/features.yaml",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:configs/model.yaml",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:src/athlete_mlops/data/ingestion.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:src/athlete_mlops/data/preprocessing.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:src/athlete_mlops/features/builder.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:src/athlete_mlops/features/definitions.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:src/athlete_mlops/features/engineering.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:src/athlete_mlops/training/dataset.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:src/athlete_mlops/training/modeling.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:src/athlete_mlops/training/tracking.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:feature_repo/feature_store.yaml",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:feature_repo/feature_definitions.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:scripts/run_ingestion.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:scripts/run_preprocessing.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:scripts/run_feature_v1.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:scripts/run_feature_v2.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:scripts/run_feast.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:scripts/run_training_split.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:scripts/run_model_pipeline.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:scripts/run_experiments.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:scripts/run_pipeline.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:scripts/build_report.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:tests/test_ingestion.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:tests/test_preprocessing.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:tests/test_features.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:tests/test_feature_v2.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:tests/test_feast_definitions.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:tests/test_training_dataset.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:tests/test_modeling.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:tests/test_tracking.py",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:data/features/v1/athlete_features_v1.parquet",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:data/features/v2/athlete_features_v2.parquet",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:data/training/athlete_training_v1.parquet",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:data/training/athlete_training_v2.parquet",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:data/splits/athlete_split.parquet",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/validation/preprocessing_summary.json",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/validation/feature_v1_manifest.json",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/validation/feature_v2_manifest.json",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/validation/feature_version_comparison.json",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/feast/feature_registry_summary.json",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/feast/feast_validation_summary.json",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/feast/online_retrieval_sample.json",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/validation/training_split_summary.json",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/validation/model_pipeline_smoke_summary.json",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/mlflow/experiment_comparison.csv",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/mlflow/experiment_comparison.json",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/mlflow/best_run_summary.json",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/figures/experiment_rmse_comparison.png",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/figures/experiment_mae_comparison.png",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/figures/experiment_r2_comparison.png",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:docs/assignment_2_rollout.md",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:docs/assignment_2_rollout.html",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/mlflow/runs/v1_hp1/run_summary.json",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/mlflow/runs/v1_hp1/predictions.csv",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/mlflow/runs/v1_hp1/feature_importance.csv",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/mlflow/runs/v1_hp1/actual_vs_predicted.png",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/mlflow/runs/v1_hp1/residual_distribution.png",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/mlflow/runs/v1_hp2/run_summary.json",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/mlflow/runs/v1_hp2/predictions.csv",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/mlflow/runs/v1_hp2/feature_importance.csv",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/mlflow/runs/v1_hp2/actual_vs_predicted.png",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/mlflow/runs/v1_hp2/residual_distribution.png",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/mlflow/runs/v2_hp1/run_summary.json",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/mlflow/runs/v2_hp1/predictions.csv",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/mlflow/runs/v2_hp1/feature_importance.csv",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/mlflow/runs/v2_hp1/actual_vs_predicted.png",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/mlflow/runs/v2_hp1/residual_distribution.png",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/mlflow/runs/v2_hp2/run_summary.json",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/mlflow/runs/v2_hp2/predictions.csv",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/mlflow/runs/v2_hp2/feature_importance.csv",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/mlflow/runs/v2_hp2/actual_vs_predicted.png",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "git_tracked:reports/mlflow/runs/v2_hp2/residual_distribution.png",
+      "category": "git",
+      "status": "PASS",
+      "detail": "tracked"
+    },
+    {
+      "name": "source_dataset_portability",
+      "category": "reproducibility",
+      "status": "PASS",
+      "detail": "git_tracked=True, dvc_pointer=True, dvc_remote=False"
     }
   ],
   "inventory": "reports/submission/artifact_inventory.csv"
