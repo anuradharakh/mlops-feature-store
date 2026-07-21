@@ -532,8 +532,78 @@ state and are intentionally not committed to Git.</p>
 <h3 id="status_7">Status</h3>
 <p>Completed.</p>
 <hr />
-<h2 id="phase-10-four-required-experiments">Phase 10 — Four Required Experiments</h2>
-<p>To be completed.</p>
+<h2 id="phase-10-automation-and-submission-audit">Phase 10 — Automation and Submission Audit</h2>
+<h3 id="objective_9">Objective</h3>
+<p>Convert the completed workflow into a reproducible, reviewer-friendly
+submission that can be executed and validated with minimal manual work.</p>
+<h3 id="end-to-end-automation">End-to-end automation</h3>
+<p>The complete pipeline is orchestrated through:</p>
+<ul>
+<li><code>scripts/run_pipeline.py</code></li>
+<li><code>make pipeline</code></li>
+</ul>
+<p>The automated sequence executes:</p>
+<ol>
+<li>Data ingestion</li>
+<li>Preprocessing</li>
+<li>Feature Version 1</li>
+<li>Feature Version 2</li>
+<li>Feast registration and retrieval</li>
+<li>Persisted training split creation</li>
+<li>Model-pipeline smoke testing</li>
+<li>Four official MLflow experiments</li>
+<li>HTML report generation</li>
+<li>Submission artifact validation</li>
+<li>DVC status validation</li>
+</ol>
+<p>Execution evidence is stored in:</p>
+<ul>
+<li><code>reports/pipeline/pipeline_run.log</code></li>
+<li><code>reports/pipeline/pipeline_run_summary.json</code></li>
+</ul>
+<h3 id="submission-audit">Submission audit</h3>
+<p>The submission audit verifies:</p>
+<ul>
+<li>Required source and configuration files</li>
+<li>Required generated artifacts</li>
+<li>Feature-version population alignment</li>
+<li>Target-leakage prevention</li>
+<li>Feast historical and online retrieval</li>
+<li>Persisted train/test split integrity</li>
+<li>Completion of all four experiment combinations</li>
+<li>Metric completeness</li>
+<li>Correct best-model selection</li>
+<li>Git tracking of reviewer artifacts</li>
+<li>Source-data portability</li>
+</ul>
+<p>Audit evidence is stored in:</p>
+<ul>
+<li><code>reports/submission/submission_audit.json</code></li>
+<li><code>reports/submission/artifact_inventory.csv</code></li>
+</ul>
+<h3 id="continuous-integration">Continuous integration</h3>
+<p>A GitHub Actions workflow runs:</p>
+<ul>
+<li>Ruff formatting validation</li>
+<li>Ruff linting</li>
+<li>Unit tests</li>
+<li>Source-level submission audit</li>
+</ul>
+<p>The full model pipeline is not rerun in CI because it includes Feast
+materialization and four full Random Forest experiments. It remains
+reproducible through the committed configurations and pipeline command.</p>
+<h3 id="final-selected-model">Final selected model</h3>
+<p>The final selected model was:</p>
+<ul>
+<li>Feature version: <code>v2</code></li>
+<li>Hyperparameter set: <code>hp1</code></li>
+<li>Algorithm: <code>RandomForestRegressor</code></li>
+<li>Test RMSE: <code>165.1166</code></li>
+<li>Test MAE: <code>126.9015</code></li>
+<li>Test R²: <code>0.6484</code></li>
+</ul>
+<h3 id="status_8">Status</h3>
+<p>Completed.</p>
 <hr />
 <h2 id="phase-11-model-evaluation-and-comparison">Phase 11 — Model Evaluation and Comparison</h2>
 <p>To be completed.</p>

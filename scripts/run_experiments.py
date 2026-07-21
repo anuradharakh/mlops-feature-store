@@ -365,9 +365,7 @@ def main() -> None:
 
     git_metadata = get_git_metadata(PROJECT_ROOT)
 
-    run_group_id = (
-        datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid.uuid4().hex[:8]
-    )
+    run_group_id = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid.uuid4().hex[:8]
 
     dataset_cache: dict[str, pd.DataFrame] = {}
     split_cache: dict[str, Any] = {}

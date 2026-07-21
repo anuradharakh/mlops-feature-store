@@ -531,9 +531,87 @@ Completed.
 
 ---
 
-## Phase 10 — Four Required Experiments
+## Phase 10 — Automation and Submission Audit
 
-To be completed.
+### Objective
+
+Convert the completed workflow into a reproducible, reviewer-friendly
+submission that can be executed and validated with minimal manual work.
+
+### End-to-end automation
+
+The complete pipeline is orchestrated through:
+
+- `scripts/run_pipeline.py`
+- `make pipeline`
+
+The automated sequence executes:
+
+1. Data ingestion
+2. Preprocessing
+3. Feature Version 1
+4. Feature Version 2
+5. Feast registration and retrieval
+6. Persisted training split creation
+7. Model-pipeline smoke testing
+8. Four official MLflow experiments
+9. HTML report generation
+10. Submission artifact validation
+11. DVC status validation
+
+Execution evidence is stored in:
+
+- `reports/pipeline/pipeline_run.log`
+- `reports/pipeline/pipeline_run_summary.json`
+
+### Submission audit
+
+The submission audit verifies:
+
+- Required source and configuration files
+- Required generated artifacts
+- Feature-version population alignment
+- Target-leakage prevention
+- Feast historical and online retrieval
+- Persisted train/test split integrity
+- Completion of all four experiment combinations
+- Metric completeness
+- Correct best-model selection
+- Git tracking of reviewer artifacts
+- Source-data portability
+
+Audit evidence is stored in:
+
+- `reports/submission/submission_audit.json`
+- `reports/submission/artifact_inventory.csv`
+
+### Continuous integration
+
+A GitHub Actions workflow runs:
+
+- Ruff formatting validation
+- Ruff linting
+- Unit tests
+- Source-level submission audit
+
+The full model pipeline is not rerun in CI because it includes Feast
+materialization and four full Random Forest experiments. It remains
+reproducible through the committed configurations and pipeline command.
+
+### Final selected model
+
+The final selected model was:
+
+- Feature version: `v2`
+- Hyperparameter set: `hp1`
+- Algorithm: `RandomForestRegressor`
+- Test RMSE: `165.1166`
+- Test MAE: `126.9015`
+- Test R²: `0.6484`
+
+### Status
+
+Completed.
 
 ---
 

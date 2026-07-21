@@ -1,11 +1,11 @@
 {
-  "run_id": "3e92d42f39d045c195682abca40c2da3",
+  "run_id": "3f06011ddaae4feeb8e046ef11f6f702",
   "run_name": "v2_hp2",
-  "run_group_id": "20260721T195957Z-30801287",
+  "run_group_id": "20260721T202757Z-9de50cb2",
   "experiment_id": "1",
   "experiment_name": "athlete-strength-random-forest",
-  "artifact_uri": "file:///Users/sanketmayekar/AnuradhaM/MLOPS/mlops-feature-store/artifacts/mlflow/3e92d42f39d045c195682abca40c2da3/artifacts",
-  "model_uri": "models:/m-bd234723c4d94acba5fe19a2a770f98a",
+  "artifact_uri": "file:///Users/sanketmayekar/AnuradhaM/MLOPS/mlops-feature-store/artifacts/mlflow/3f06011ddaae4feeb8e046ef11f6f702/artifacts",
+  "model_uri": "models:/m-f3564e432e3742448b320905d0c1e227",
   "model_logged": true,
   "feature_version": "v2",
   "hyperparameter_set": "hp2",
@@ -40,8 +40,8 @@
     "test_rmse": 169.29313298,
     "test_mae": 130.22877231,
     "test_r2": 0.63040438,
-    "training_seconds": 4.29833133,
-    "prediction_seconds": 0.43486575,
+    "training_seconds": 4.19048325,
+    "prediction_seconds": 0.39990292,
     "test_train_rmse_gap": 41.83699828,
     "train_test_r2_gap": 0.1625513
   },
@@ -114,7 +114,7 @@
     "hyperparameter_description": "Larger and more flexible forest"
   },
   "git": {
-    "git_commit": "0fc25be15030cfa37d71f6fb2ca9f07cb54ef9dd",
+    "git_commit": "55e8c73ec595e9d8add9784661df955706ba31e0",
     "git_branch": "master",
     "git_dirty": "true"
   }

@@ -70,7 +70,7 @@
     "test_rmse": 169.463729,
     "test_mae": 131.179447,
     "test_r2": 0.620099,
-    "training_seconds": 0.095846,
-    "prediction_seconds": 0.036408
+    "training_seconds": 0.094837,
+    "prediction_seconds": 0.03566
   }
 }

@@ -1,0 +1,132 @@
+{
+  "status": "PASS",
+  "stage_count": 11,
+  "passed_stage_count": 11,
+  "failed_stage_count": 0,
+  "total_elapsed_seconds": 47.6497,
+  "stages": [
+    {
+      "stage": "ingestion",
+      "description": "Materialize and validate the raw athlete dataset.",
+      "command": [
+        "/Users/sanketmayekar/AnuradhaM/MLOPS/mlops-feature-store/.venv/bin/python",
+        "scripts/run_ingestion.py"
+      ],
+      "return_code": 0,
+      "elapsed_seconds": 2.6394,
+      "status": "PASS"
+    },
+    {
+      "stage": "preprocessing",
+      "description": "Clean athlete data and construct labels.",
+      "command": [
+        "/Users/sanketmayekar/AnuradhaM/MLOPS/mlops-feature-store/.venv/bin/python",
+        "scripts/run_preprocessing.py"
+      ],
+      "return_code": 0,
+      "elapsed_seconds": 3.2279,
+      "status": "PASS"
+    },
+    {
+      "stage": "feature_v1",
+      "description": "Build baseline Feature Version 1.",
+      "command": [
+        "/Users/sanketmayekar/AnuradhaM/MLOPS/mlops-feature-store/.venv/bin/python",
+        "scripts/run_feature_v1.py"
+      ],
+      "return_code": 0,
+      "elapsed_seconds": 0.4685,
+      "status": "PASS"
+    },
+    {
+      "stage": "feature_v2",
+      "description": "Build enhanced Feature Version 2.",
+      "command": [
+        "/Users/sanketmayekar/AnuradhaM/MLOPS/mlops-feature-store/.venv/bin/python",
+        "scripts/run_feature_v2.py"
+      ],
+      "return_code": 0,
+      "elapsed_seconds": 0.5063,
+      "status": "PASS"
+    },
+    {
+      "stage": "feast",
+      "description": "Apply Feast and retrieve historical and online features.",
+      "command": [
+        "/Users/sanketmayekar/AnuradhaM/MLOPS/mlops-feature-store/.venv/bin/python",
+        "scripts/run_feast.py",
+        "--reset"
+      ],
+      "return_code": 0,
+      "elapsed_seconds": 14.2297,
+      "status": "PASS"
+    },
+    {
+      "stage": "training_split",
+      "description": "Create the persisted train/test split.",
+      "command": [
+        "/Users/sanketmayekar/AnuradhaM/MLOPS/mlops-feature-store/.venv/bin/python",
+        "scripts/run_training_split.py"
+      ],
+      "return_code": 0,
+      "elapsed_seconds": 1.8204,
+      "status": "PASS"
+    },
+    {
+      "stage": "model_smoke_test",
+      "description": "Validate the Scikit-learn model pipeline.",
+      "command": [
+        "/Users/sanketmayekar/AnuradhaM/MLOPS/mlops-feature-store/.venv/bin/python",
+        "scripts/run_model_pipeline.py"
+      ],
+      "return_code": 0,
+      "elapsed_seconds": 1.9589,
+      "status": "PASS"
+    },
+    {
+      "stage": "experiments",
+      "description": "Run the four official MLflow experiments.",
+      "command": [
+        "/Users/sanketmayekar/AnuradhaM/MLOPS/mlops-feature-store/.venv/bin/python",
+        "scripts/run_experiments.py",
+        "--reset"
+      ],
+      "return_code": 0,
+      "elapsed_seconds": 21.5364,
+      "status": "PASS"
+    },
+    {
+      "stage": "report",
+      "description": "Generate the final HTML rollout report.",
+      "command": [
+        "/Users/sanketmayekar/AnuradhaM/MLOPS/mlops-feature-store/.venv/bin/python",
+        "scripts/build_report.py"
+      ],
+      "return_code": 0,
+      "elapsed_seconds": 0.0763,
+      "status": "PASS"
+    },
+    {
+      "stage": "submission_audit",
+      "description": "Validate required submission artifacts.",
+      "command": [
+        "/Users/sanketmayekar/AnuradhaM/MLOPS/mlops-feature-store/.venv/bin/python",
+        "scripts/verify_submission.py"
+      ],
+      "return_code": 0,
+      "elapsed_seconds": 0.8597,
+      "status": "PASS"
+    },
+    {
+      "stage": "dvc_status",
+      "description": "Confirm DVC-tracked data is current.",
+      "command": [
+        "dvc",
+        "status"
+      ],
+      "return_code": 0,
+      "elapsed_seconds": 0.3262,
+      "status": "PASS"
+    }
+  ]
+}
