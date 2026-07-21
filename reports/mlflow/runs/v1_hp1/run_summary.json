@@ -1,0 +1,112 @@
+{
+  "run_id": "b7e29a6dbf71446c9e4454e4a6f29883",
+  "run_name": "v1_hp1",
+  "run_group_id": "20260721T195957Z-30801287",
+  "experiment_id": "1",
+  "experiment_name": "athlete-strength-random-forest",
+  "artifact_uri": "file:///Users/sanketmayekar/AnuradhaM/MLOPS/mlops-feature-store/artifacts/mlflow/b7e29a6dbf71446c9e4454e4a6f29883/artifacts",
+  "model_uri": "models:/m-174f5489e07b4f408a7dfd8514642196",
+  "model_logged": true,
+  "feature_version": "v1",
+  "hyperparameter_set": "hp1",
+  "parameters": {
+    "algorithm": "RandomForestRegressor",
+    "feature_version": "v1",
+    "feature_view_name": "athlete_features_v1",
+    "hyperparameter_set": "hp1",
+    "source_feature_count": 5,
+    "source_features": "age,weight,height,gender,region",
+    "transformed_feature_count": 23,
+    "train_rows": 65365,
+    "test_rows": 16342,
+    "random_state": 42,
+    "criterion": "squared_error",
+    "numerical_imputer": "median",
+    "categorical_imputer": "most_frequent",
+    "feature_data_hash_sha256": "69d28f4fa6883a7335db8cd93d7933d59d394fb66cffa561f80815cea84fa5fc",
+    "split_hash_sha256": "2b46e0b84ab9b9bd7a340566c6e2f67da7e494b34282054fe56a1e0f5334456e",
+    "rf_description": "Conservative baseline forest",
+    "rf_n_estimators": 100,
+    "rf_max_depth": 12,
+    "rf_min_samples_split": 2,
+    "rf_min_samples_leaf": 5,
+    "rf_max_features": "sqrt",
+    "rf_bootstrap": true
+  },
+  "metrics": {
+    "train_rmse": 163.18397882,
+    "train_mae": 125.76643444,
+    "train_r2": 0.6606117,
+    "test_rmse": 168.28620531,
+    "test_mae": 129.76192429,
+    "test_r2": 0.63478789,
+    "training_seconds": 0.24699204,
+    "prediction_seconds": 0.09845958,
+    "test_train_rmse_gap": 5.10222649,
+    "train_test_r2_gap": 0.0258238
+  },
+  "pipeline": {
+    "scikit_learn_version": "1.9.0",
+    "algorithm": "RandomForestRegressor",
+    "feature_version": "v1",
+    "feature_view_name": "athlete_features_v1",
+    "source_features": [
+      "age",
+      "weight",
+      "height",
+      "gender",
+      "region"
+    ],
+    "numerical_features": [
+      "age",
+      "weight",
+      "height"
+    ],
+    "categorical_features": [
+      "gender",
+      "region"
+    ],
+    "source_feature_count": 5,
+    "transformed_feature_count": 23,
+    "transformed_feature_names": [
+      "numerical__age",
+      "numerical__weight",
+      "numerical__height",
+      "categorical__gender_--",
+      "categorical__gender_Female",
+      "categorical__gender_Male",
+      "categorical__region_Africa",
+      "categorical__region_Asia",
+      "categorical__region_Australia",
+      "categorical__region_Canada East",
+      "categorical__region_Canada West",
+      "categorical__region_Central East",
+      "categorical__region_Europe",
+      "categorical__region_Latin America",
+      "categorical__region_Mid Atlantic",
+      "categorical__region_North Central",
+      "categorical__region_North East",
+      "categorical__region_North West",
+      "categorical__region_Northern California",
+      "categorical__region_South Central",
+      "categorical__region_South East",
+      "categorical__region_South West",
+      "categorical__region_Southern California"
+    ],
+    "hyperparameter_set": "hp1",
+    "hyperparameters": {
+      "n_estimators": 100,
+      "max_depth": 12,
+      "min_samples_split": 2,
+      "min_samples_leaf": 5,
+      "max_features": "sqrt",
+      "bootstrap": true
+    },
+    "hyperparameter_description": "Conservative baseline forest"
+  },
+  "git": {
+    "git_commit": "0fc25be15030cfa37d71f6fb2ca9f07cb54ef9dd",
+    "git_branch": "master",
+    "git_dirty": "true"
+  }
+}

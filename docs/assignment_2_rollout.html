@@ -299,17 +299,238 @@ missingness reports, and deterministic data hashes.</p>
 <h3 id="status_3">Status</h3>
 <p>Completed.</p>
 <hr />
-<h2 id="phase-6-feast-integration">Phase 6 — Feast Integration</h2>
-<p>To be completed.</p>
+<h2 id="phase-6-feast-feature-store">Phase 6 — Feast Feature Store</h2>
+<h3 id="objective_5">Objective</h3>
+<p>Register both feature versions in Feast and demonstrate historical and online
+feature retrieval.</p>
+<h3 id="local-architecture">Local architecture</h3>
+<p>The Feast deployment uses:</p>
+<ul>
+<li>Parquet files as the offline feature sources</li>
+<li>A local Feast registry</li>
+<li>SQLite as the online feature store</li>
+<li><code>athlete_id</code> as the entity join key</li>
+<li><code>event_timestamp</code> for point-in-time feature retrieval</li>
+</ul>
+<h3 id="registered-objects">Registered objects</h3>
+<p>Entity:</p>
+<ul>
+<li><code>athlete</code></li>
+</ul>
+<p>Feature views:</p>
+<ul>
+<li><code>athlete_features_v1</code></li>
+<li><code>athlete_features_v2</code></li>
+</ul>
+<p>Feature services:</p>
+<ul>
+<li><code>athlete_strength_v1</code></li>
+<li><code>athlete_strength_v2</code></li>
+</ul>
+<p>Separate feature services provide explicit model-centric version tracking.</p>
+<h3 id="historical-retrieval">Historical retrieval</h3>
+<p>The Phase 3 label artifact was supplied to Feast as an entity dataframe
+containing:</p>
+<ul>
+<li><code>athlete_id</code></li>
+<li><code>event_timestamp</code></li>
+<li><code>total_lift</code></li>
+</ul>
+<p>Feast retrieved point-in-time features for all 81,707 eligible athletes for
+both feature versions. The complete generated datasets are stored locally
+under <code>data/training/</code>.</p>
+<h3 id="online-retrieval">Online retrieval</h3>
+<p>Both feature views were materialized from their Parquet offline sources into
+the SQLite online store. Online retrieval was validated for five athlete
+entities using both versioned feature services.</p>
+<h3 id="committed-evidence">Committed evidence</h3>
+<ul>
+<li><code>feature_repo/feature_store.yaml</code></li>
+<li><code>feature_repo/feature_definitions.py</code></li>
+<li><code>reports/feast/feast_apply_output.txt</code></li>
+<li><code>reports/feast/feature_registry_summary.json</code></li>
+<li><code>reports/feast/historical_v1_sample.csv</code></li>
+<li><code>reports/feast/historical_v2_sample.csv</code></li>
+<li><code>reports/feast/online_retrieval_sample.json</code></li>
+<li><code>reports/feast/feast_validation_summary.json</code></li>
+</ul>
+<p>The generated registry and online SQLite database are intentionally excluded
+because they can be reproduced by running:</p>
+<p><code>python scripts/run_feast.py --reset</code></p>
+<h3 id="status_4">Status</h3>
+<p>Completed.</p>
 <hr />
-<h2 id="phase-7-feature-retrieval">Phase 7 — Feature Retrieval</h2>
-<p>To be completed.</p>
+<h2 id="phase-7-reproducible-training-split">Phase 7 — Reproducible Training Split</h2>
+<h3 id="objective_6">Objective</h3>
+<p>Prepare aligned versioned training datasets and create one deterministic
+train/test split that will be reused across all four experiments.</p>
+<h3 id="training-datasets">Training datasets</h3>
+<p>The training datasets were generated through Feast historical retrieval:</p>
+<ul>
+<li><code>data/training/athlete_training_v1.parquet</code></li>
+<li><code>data/training/athlete_training_v2.parquet</code></li>
+</ul>
+<p>Both datasets contain the same athlete entities, event timestamps, and
+<code>total_lift</code> labels. Version 1 contains five model features, while Version 2
+contains eight.</p>
+<h3 id="split-strategy">Split strategy</h3>
+<p>A single 80/20 train/test split was generated using:</p>
+<ul>
+<li>Random state: <code>42</code></li>
+<li>Shuffling: enabled</li>
+<li>Entity-level split key: <code>athlete_id</code></li>
+</ul>
+<p>The split membership is persisted as:</p>
+<ul>
+<li><code>data/splits/athlete_split.parquet</code></li>
+</ul>
+<p>This artifact will be reused for every experiment, ensuring that differences
+in model performance are attributable to feature versions or hyperparameter
+configurations rather than different evaluation populations.</p>
+<h3 id="leakage-prevention_1">Leakage prevention</h3>
+<p>The source target components were explicitly prohibited from the training
+datasets:</p>
+<ul>
+<li><code>deadlift</code></li>
+<li><code>candj</code></li>
+<li><code>snatch</code></li>
+<li><code>backsq</code></li>
+</ul>
+<p>The only label available to the model pipeline is <code>total_lift</code>.</p>
+<h3 id="generated-evidence">Generated evidence</h3>
+<ul>
+<li><code>reports/validation/training_split_summary.json</code></li>
+<li><code>reports/validation/training_dataset_missingness.csv</code></li>
+<li><code>reports/figures/training_split_target_distribution.png</code></li>
+</ul>
+<h3 id="status_5">Status</h3>
+<p>Completed.</p>
 <hr />
 <h2 id="phase-8-scikit-learn-model-pipeline">Phase 8 — Scikit-learn Model Pipeline</h2>
-<p>To be completed.</p>
-<hr />
+<h2 id="phase-8-scikit-learn-model-pipeline_1">Phase 8 — Scikit-learn Model Pipeline</h2>
+<h3 id="objective_7">Objective</h3>
+<p>Build one reusable Scikit-learn pipeline that can be applied consistently
+across both feature versions and both hyperparameter configurations.</p>
+<h3 id="preprocessing">Preprocessing</h3>
+<p>Numerical features use median imputation. Categorical features use
+most-frequent imputation followed by one-hot encoding.</p>
+<p>All preprocessing components are contained within the fitted Scikit-learn
+pipeline. The pipeline is fitted only on the training partition, preventing
+test-set information from influencing imputation statistics or category
+discovery.</p>
+<p>Unknown categorical values are ignored during transformation so that
+previously unseen test or serving values do not cause prediction failures.</p>
+<h3 id="estimator">Estimator</h3>
+<p>The selected algorithm is <code>RandomForestRegressor</code>.</p>
+<p>Two manually configured hyperparameter sets are defined:</p>
+<ul>
+<li><code>hp1</code>: 100 estimators, maximum depth 12, minimum leaf size 5</li>
+<li><code>hp2</code>: 300 estimators, maximum depth 20, minimum leaf size 2</li>
+</ul>
+<p>No automated hyperparameter tuning or AutoML is used.</p>
+<h3 id="smoke-test">Smoke test</h3>
+<p>A deterministic subset of 10,000 training records and 2,500 test records was
+used to validate the complete model pipeline before experiment tracking.</p>
+<p>The smoke test is an infrastructure check and is not counted as one of the
+four official experiments.</p>
+<h3 id="generated-evidence_1">Generated evidence</h3>
+<ul>
+<li><code>reports/validation/model_pipeline_smoke_summary.json</code></li>
+<li><code>reports/validation/model_pipeline_smoke_predictions.csv</code></li>
+<li><code>reports/validation/model_pipeline_smoke_feature_importance.csv</code></li>
+<li><code>reports/validation/model_pipeline_structure.txt</code></li>
+<li><code>reports/figures/model_pipeline_smoke_actual_vs_predicted.png</code></li>
+</ul>
+<h3 id="status_6">Status</h3>
+<h2 id="completed">Completed.</h2>
 <h2 id="phase-9-mlflow-experiment-tracking">Phase 9 — MLflow Experiment Tracking</h2>
-<p>To be completed.</p>
+<h3 id="objective_8">Objective</h3>
+<p>Execute and track the four required model experiments using the same
+Random Forest algorithm and the same persisted train/test split.</p>
+<h3 id="experiment-matrix">Experiment matrix</h3>
+<table>
+<thead>
+<tr>
+<th>Run</th>
+<th>Feature version</th>
+<th>Hyperparameter set</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>v1_hp1</code></td>
+<td>Version 1</td>
+<td>HP1</td>
+</tr>
+<tr>
+<td><code>v1_hp2</code></td>
+<td>Version 1</td>
+<td>HP2</td>
+</tr>
+<tr>
+<td><code>v2_hp1</code></td>
+<td>Version 2</td>
+<td>HP1</td>
+</tr>
+<tr>
+<td><code>v2_hp2</code></td>
+<td>Version 2</td>
+<td>HP2</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tracking-architecture">Tracking architecture</h3>
+<p>MLflow uses:</p>
+<ul>
+<li>SQLite for experiment and run metadata</li>
+<li>A local filesystem artifact store for fitted models</li>
+<li>Explicit tags for feature version, hyperparameter configuration,
+  Git commit, and split hash</li>
+<li>Separate metrics, predictions, feature importances, and diagnostic
+  visualizations for every run</li>
+</ul>
+<h3 id="logged-metrics">Logged metrics</h3>
+<p>Each run records:</p>
+<ul>
+<li>Train RMSE</li>
+<li>Train MAE</li>
+<li>Train R²</li>
+<li>Test RMSE</li>
+<li>Test MAE</li>
+<li>Test R²</li>
+<li>Training duration</li>
+<li>Prediction duration</li>
+<li>Train/test RMSE gap</li>
+<li>Train/test R² gap</li>
+</ul>
+<h3 id="reproducibility">Reproducibility</h3>
+<p>Every run references:</p>
+<ul>
+<li>The same persisted train/test membership</li>
+<li>The same split SHA-256 hash</li>
+<li>The associated feature-data hash</li>
+<li>The Git commit and worktree state</li>
+<li>The full model and feature configuration</li>
+<li>The locked Python environment</li>
+</ul>
+<h3 id="generated-evidence_2">Generated evidence</h3>
+<ul>
+<li><code>reports/mlflow/experiment_comparison.csv</code></li>
+<li><code>reports/mlflow/experiment_comparison.json</code></li>
+<li><code>reports/mlflow/best_run_summary.json</code></li>
+<li><code>reports/mlflow/runs/v1_hp1/</code></li>
+<li><code>reports/mlflow/runs/v1_hp2/</code></li>
+<li><code>reports/mlflow/runs/v2_hp1/</code></li>
+<li><code>reports/mlflow/runs/v2_hp2/</code></li>
+<li><code>reports/figures/experiment_rmse_comparison.png</code></li>
+<li><code>reports/figures/experiment_mae_comparison.png</code></li>
+<li><code>reports/figures/experiment_r2_comparison.png</code></li>
+<li><code>docs/assets/mlflow_four_experiments.png</code></li>
+</ul>
+<p>The local MLflow database and fitted model binaries are reproducible runtime
+state and are intentionally not committed to Git.</p>
+<h3 id="status_7">Status</h3>
+<p>Completed.</p>
 <hr />
 <h2 id="phase-10-four-required-experiments">Phase 10 — Four Required Experiments</h2>
 <p>To be completed.</p>

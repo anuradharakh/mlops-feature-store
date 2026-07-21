@@ -1,0 +1,24 @@
+feature,importance
+categorical__gender_Male,0.35998438447647607
+categorical__gender_Female,0.26655307163971054
+numerical__weight,0.21227018512591997
+numerical__height,0.10761672518907325
+numerical__age,0.04180347914856969
+categorical__region_Europe,0.0032483475724256273
+categorical__region_Latin America,0.0024734902353753716
+categorical__region_South Central,0.0009167510080012403
+categorical__region_Australia,0.0007570763183072611
+categorical__region_North Central,0.0007494392510371211
+categorical__region_South East,0.0005112256215485389
+categorical__region_Africa,0.0004660326989111134
+categorical__region_Mid Atlantic,0.0004266470184719403
+categorical__region_Asia,0.00035046385247660886
+categorical__region_Central East,0.00033926340505716204
+categorical__region_South West,0.0003355408752247392
+categorical__region_North East,0.0002617264394178344
+categorical__region_North West,0.00020941736843089247
+categorical__region_Canada East,0.00019677756749308356
+categorical__region_Northern California,0.0001827454553843689
+categorical__region_Canada West,0.00018206587266786828
+categorical__region_Southern California,0.00016514386001975412
+categorical__gender_--,0.0

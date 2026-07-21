@@ -49,6 +49,29 @@ model:
       max_features: 1.0
       bootstrap: true
 
+mlflow:
+  tracking_database: mlflow.db
+  artifact_root: artifacts/mlflow
+  experiment_name: athlete-strength-random-forest
+  log_models: true
+
+  official_runs:
+    - run_name: v1_hp1
+      feature_version: v1
+      hyperparameter_set: hp1
+
+    - run_name: v1_hp2
+      feature_version: v1
+      hyperparameter_set: hp2
+
+    - run_name: v2_hp1
+      feature_version: v2
+      hyperparameter_set: hp1
+
+    - run_name: v2_hp2
+      feature_version: v2
+      hyperparameter_set: hp2
+
 smoke_test:
   feature_version: v1
   hyperparameter_set: hp1
@@ -67,3 +90,12 @@ artifacts:
   model_smoke_feature_importance: reports/validation/model_pipeline_smoke_feature_importance.csv
   model_smoke_structure: reports/validation/model_pipeline_structure.txt
   model_smoke_figure: reports/figures/model_pipeline_smoke_actual_vs_predicted.png
+
+  experiment_report_directory: reports/mlflow
+  experiment_comparison_csv: reports/mlflow/experiment_comparison.csv
+  experiment_comparison_json: reports/mlflow/experiment_comparison.json
+  best_run_summary: reports/mlflow/best_run_summary.json
+
+  experiment_rmse_figure: reports/figures/experiment_rmse_comparison.png
+  experiment_mae_figure: reports/figures/experiment_mae_comparison.png
+  experiment_r2_figure: reports/figures/experiment_r2_comparison.png

@@ -1,0 +1,112 @@
+{
+  "run_id": "c02e8423887c4db9957220cc2b4c0a37",
+  "run_name": "v1_hp2",
+  "run_group_id": "20260721T195957Z-30801287",
+  "experiment_id": "1",
+  "experiment_name": "athlete-strength-random-forest",
+  "artifact_uri": "file:///Users/sanketmayekar/AnuradhaM/MLOPS/mlops-feature-store/artifacts/mlflow/c02e8423887c4db9957220cc2b4c0a37/artifacts",
+  "model_uri": "models:/m-f8beb14e9466485c91573f7f5a7e53d2",
+  "model_logged": true,
+  "feature_version": "v1",
+  "hyperparameter_set": "hp2",
+  "parameters": {
+    "algorithm": "RandomForestRegressor",
+    "feature_version": "v1",
+    "feature_view_name": "athlete_features_v1",
+    "hyperparameter_set": "hp2",
+    "source_feature_count": 5,
+    "source_features": "age,weight,height,gender,region",
+    "transformed_feature_count": 23,
+    "train_rows": 65365,
+    "test_rows": 16342,
+    "random_state": 42,
+    "criterion": "squared_error",
+    "numerical_imputer": "median",
+    "categorical_imputer": "most_frequent",
+    "feature_data_hash_sha256": "69d28f4fa6883a7335db8cd93d7933d59d394fb66cffa561f80815cea84fa5fc",
+    "split_hash_sha256": "2b46e0b84ab9b9bd7a340566c6e2f67da7e494b34282054fe56a1e0f5334456e",
+    "rf_description": "Larger and more flexible forest",
+    "rf_n_estimators": 300,
+    "rf_max_depth": 20,
+    "rf_min_samples_split": 2,
+    "rf_min_samples_leaf": 2,
+    "rf_max_features": 1.0,
+    "rf_bootstrap": true
+  },
+  "metrics": {
+    "train_rmse": 126.88245817,
+    "train_mae": 96.40396466,
+    "train_r2": 0.79481529,
+    "test_rmse": 170.78241026,
+    "test_mae": 131.36673068,
+    "test_r2": 0.62387309,
+    "training_seconds": 2.59125887,
+    "prediction_seconds": 0.39352783,
+    "test_train_rmse_gap": 43.89995209,
+    "train_test_r2_gap": 0.1709422
+  },
+  "pipeline": {
+    "scikit_learn_version": "1.9.0",
+    "algorithm": "RandomForestRegressor",
+    "feature_version": "v1",
+    "feature_view_name": "athlete_features_v1",
+    "source_features": [
+      "age",
+      "weight",
+      "height",
+      "gender",
+      "region"
+    ],
+    "numerical_features": [
+      "age",
+      "weight",
+      "height"
+    ],
+    "categorical_features": [
+      "gender",
+      "region"
+    ],
+    "source_feature_count": 5,
+    "transformed_feature_count": 23,
+    "transformed_feature_names": [
+      "numerical__age",
+      "numerical__weight",
+      "numerical__height",
+      "categorical__gender_--",
+      "categorical__gender_Female",
+      "categorical__gender_Male",
+      "categorical__region_Africa",
+      "categorical__region_Asia",
+      "categorical__region_Australia",
+      "categorical__region_Canada East",
+      "categorical__region_Canada West",
+      "categorical__region_Central East",
+      "categorical__region_Europe",
+      "categorical__region_Latin America",
+      "categorical__region_Mid Atlantic",
+      "categorical__region_North Central",
+      "categorical__region_North East",
+      "categorical__region_North West",
+      "categorical__region_Northern California",
+      "categorical__region_South Central",
+      "categorical__region_South East",
+      "categorical__region_South West",
+      "categorical__region_Southern California"
+    ],
+    "hyperparameter_set": "hp2",
+    "hyperparameters": {
+      "n_estimators": 300,
+      "max_depth": 20,
+      "min_samples_split": 2,
+      "min_samples_leaf": 2,
+      "max_features": 1.0,
+      "bootstrap": true
+    },
+    "hyperparameter_description": "Larger and more flexible forest"
+  },
+  "git": {
+    "git_commit": "0fc25be15030cfa37d71f6fb2ca9f07cb54ef9dd",
+    "git_branch": "master",
+    "git_dirty": "true"
+  }
+}

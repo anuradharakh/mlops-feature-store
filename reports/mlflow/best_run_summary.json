@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "run_group_id": "20260721T195957Z-30801287",
+  "run_id": "be9a561c04f84b1a8fe0eaa982ffa168",
+  "run_name": "v2_hp1",
+  "feature_version": "v2",
+  "hyperparameter_set": "hp1",
+  "model_uri": "models:/m-868b7f5286c44bc0809a52bda973da2f",
+  "test_rmse": 165.11657252245828,
+  "test_mae": 126.90149541124914,
+  "test_r2": 0.6484157109779285,
+  "selection_reason": "Lowest test RMSE, with test MAE and test R\u00b2 used as tie breakers."
+}

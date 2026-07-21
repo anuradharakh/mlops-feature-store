@@ -94,7 +94,7 @@ mdurl==0.1.2
 mlflow==3.14.0
 mlflow-skinny==3.14.0
 mlflow-tracing==3.14.0
--e git+https://github.com/anuradharakh/mlops-feature-store.git@1e3e56e3fc45eda10cfa6db459eb16d571926cbc#egg=mlops_feature_store
+-e git+https://github.com/anuradharakh/mlops-feature-store.git@0fc25be15030cfa37d71f6fb2ca9f07cb54ef9dd#egg=mlops_feature_store
 mmh3==5.2.1
 multidict==6.7.1
 mypy==2.3.0

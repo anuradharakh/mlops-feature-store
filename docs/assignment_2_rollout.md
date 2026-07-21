@@ -457,7 +457,77 @@ Completed.
 
 ## Phase 9 — MLflow Experiment Tracking
 
-To be completed.
+### Objective
+
+Execute and track the four required model experiments using the same
+Random Forest algorithm and the same persisted train/test split.
+
+### Experiment matrix
+
+| Run | Feature version | Hyperparameter set |
+|---|---|---|
+| `v1_hp1` | Version 1 | HP1 |
+| `v1_hp2` | Version 1 | HP2 |
+| `v2_hp1` | Version 2 | HP1 |
+| `v2_hp2` | Version 2 | HP2 |
+
+### Tracking architecture
+
+MLflow uses:
+
+- SQLite for experiment and run metadata
+- A local filesystem artifact store for fitted models
+- Explicit tags for feature version, hyperparameter configuration,
+  Git commit, and split hash
+- Separate metrics, predictions, feature importances, and diagnostic
+  visualizations for every run
+
+### Logged metrics
+
+Each run records:
+
+- Train RMSE
+- Train MAE
+- Train R²
+- Test RMSE
+- Test MAE
+- Test R²
+- Training duration
+- Prediction duration
+- Train/test RMSE gap
+- Train/test R² gap
+
+### Reproducibility
+
+Every run references:
+
+- The same persisted train/test membership
+- The same split SHA-256 hash
+- The associated feature-data hash
+- The Git commit and worktree state
+- The full model and feature configuration
+- The locked Python environment
+
+### Generated evidence
+
+- `reports/mlflow/experiment_comparison.csv`
+- `reports/mlflow/experiment_comparison.json`
+- `reports/mlflow/best_run_summary.json`
+- `reports/mlflow/runs/v1_hp1/`
+- `reports/mlflow/runs/v1_hp2/`
+- `reports/mlflow/runs/v2_hp1/`
+- `reports/mlflow/runs/v2_hp2/`
+- `reports/figures/experiment_rmse_comparison.png`
+- `reports/figures/experiment_mae_comparison.png`
+- `reports/figures/experiment_r2_comparison.png`
+- `docs/assets/mlflow_four_experiments.png`
+
+The local MLflow database and fitted model binaries are reproducible runtime
+state and are intentionally not committed to Git.
+
+### Status
+
+Completed.
 
 ---
 
