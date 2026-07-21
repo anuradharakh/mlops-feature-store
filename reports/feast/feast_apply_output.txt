@@ -1,0 +1,13 @@
+No project found in the repository. Using project name athlete_strength defined in feature_store.yaml
+Applying changes for project athlete_strength
+Created project athlete_strength
+Created entity athlete
+Created feature view athlete_features_v1
+Created feature view athlete_features_v2
+Created feature service athlete_strength_v1
+Created feature service athlete_strength_v2
+
+Created sqlite table athlete_strength_athlete_features_v1
+Created sqlite table athlete_strength_athlete_features_v2
+/Users/sanketmayekar/AnuradhaM/MLOPS/mlops-feature-store/feature_repo/feature_definitions.py:24: DeprecationWarning: Entity value_type will be mandatory in the next release. Please specify a value_type for entity 'athlete'.
+  athlete = Entity(

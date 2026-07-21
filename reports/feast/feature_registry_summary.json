@@ -1,0 +1,78 @@
+{
+  "project": "athlete_strength",
+  "feast_version": "0.64.0",
+  "entities": [
+    {
+      "name": "athlete",
+      "join_keys": [
+        "athlete_id"
+      ],
+      "description": "Unique athlete represented by athlete_id."
+    }
+  ],
+  "feature_views": [
+    {
+      "name": "athlete_features_v1",
+      "entities": [
+        "athlete"
+      ],
+      "features": [
+        "age",
+        "athlete_id",
+        "gender",
+        "height",
+        "region",
+        "weight"
+      ],
+      "online": true,
+      "tags": {
+        "team": "athlete_mlops",
+        "feature_version": "v1",
+        "feature_group": "baseline"
+      }
+    },
+    {
+      "name": "athlete_features_v2",
+      "entities": [
+        "athlete"
+      ],
+      "features": [
+        "age",
+        "age_squared",
+        "athlete_id",
+        "bmi",
+        "gender",
+        "height",
+        "region",
+        "weight",
+        "weight_height_ratio"
+      ],
+      "online": true,
+      "tags": {
+        "team": "athlete_mlops",
+        "feature_version": "v2",
+        "parent_version": "v1",
+        "feature_group": "enhanced"
+      }
+    }
+  ],
+  "feature_services": [
+    {
+      "name": "athlete_strength_v1",
+      "tags": {
+        "model_family": "random_forest",
+        "feature_version": "v1"
+      }
+    },
+    {
+      "name": "athlete_strength_v2",
+      "tags": {
+        "model_family": "random_forest",
+        "feature_version": "v2"
+      }
+    }
+  ],
+  "entity_count": 1,
+  "feature_view_count": 2,
+  "feature_service_count": 2
+}

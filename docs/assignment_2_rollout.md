@@ -267,9 +267,79 @@ Completed.
 
 ---
 
-## Phase 6 — Feast Integration
+## Phase 6 — Feast Feature Store
 
-To be completed.
+### Objective
+
+Register both feature versions in Feast and demonstrate historical and online
+feature retrieval.
+
+### Local architecture
+
+The Feast deployment uses:
+
+- Parquet files as the offline feature sources
+- A local Feast registry
+- SQLite as the online feature store
+- `athlete_id` as the entity join key
+- `event_timestamp` for point-in-time feature retrieval
+
+### Registered objects
+
+Entity:
+
+- `athlete`
+
+Feature views:
+
+- `athlete_features_v1`
+- `athlete_features_v2`
+
+Feature services:
+
+- `athlete_strength_v1`
+- `athlete_strength_v2`
+
+Separate feature services provide explicit model-centric version tracking.
+
+### Historical retrieval
+
+The Phase 3 label artifact was supplied to Feast as an entity dataframe
+containing:
+
+- `athlete_id`
+- `event_timestamp`
+- `total_lift`
+
+Feast retrieved point-in-time features for all 81,707 eligible athletes for
+both feature versions. The complete generated datasets are stored locally
+under `data/training/`.
+
+### Online retrieval
+
+Both feature views were materialized from their Parquet offline sources into
+the SQLite online store. Online retrieval was validated for five athlete
+entities using both versioned feature services.
+
+### Committed evidence
+
+- `feature_repo/feature_store.yaml`
+- `feature_repo/feature_definitions.py`
+- `reports/feast/feast_apply_output.txt`
+- `reports/feast/feature_registry_summary.json`
+- `reports/feast/historical_v1_sample.csv`
+- `reports/feast/historical_v2_sample.csv`
+- `reports/feast/online_retrieval_sample.json`
+- `reports/feast/feast_validation_summary.json`
+
+The generated registry and online SQLite database are intentionally excluded
+because they can be reproduced by running:
+
+`python scripts/run_feast.py --reset`
+
+### Status
+
+Completed.
 
 ---
 

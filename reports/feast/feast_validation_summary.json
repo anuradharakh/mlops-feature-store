@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "feast_version": "0.64.0",
+  "project": "athlete_strength",
+  "entity_name": "athlete",
+  "entity_join_key": "athlete_id",
+  "feature_views": [
+    "athlete_features_v1",
+    "athlete_features_v2"
+  ],
+  "feature_services": [
+    "athlete_strength_v1",
+    "athlete_strength_v2"
+  ],
+  "v1_historical_rows": 81707,
+  "v2_historical_rows": 81707,
+  "v1_historical_feature_count": 5,
+  "v2_historical_feature_count": 8,
+  "historical_population_aligned": true,
+  "materialization_start": "2024-01-01T00:00:02+00:00",
+  "materialization_end": "2024-01-05T21:29:22+00:00",
+  "online_sample_entity_count": 5,
+  "online_v1_retrieval_passed": true,
+  "online_v2_retrieval_passed": true,
+  "generated_training_artifacts": [
+    "data/training/athlete_training_v1.parquet",
+    "data/training/athlete_training_v2.parquet"
+  ],
+  "committed_review_artifacts": [
+    "reports/feast/feast_apply_output.txt",
+    "reports/feast/feature_registry_summary.json",
+    "reports/feast/historical_v1_sample.csv",
+    "reports/feast/historical_v2_sample.csv",
+    "reports/feast/online_retrieval_sample.json"
+  ]
+}

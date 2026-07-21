@@ -12,3 +12,4 @@ pyyaml
 ruff
 scikit-learn
 pytest
+feast==0.64.0
