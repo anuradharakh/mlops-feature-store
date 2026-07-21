@@ -14,26 +14,12 @@
       93,
       96
     ],
-    "age": [
-      25.0,
-      32.0,
-      30.0,
-      32.0,
-      30.0
-    ],
-    "height": [
-      68.0,
-      77.0,
-      72.0,
-      72.0,
-      69.0
-    ],
-    "gender": [
-      "Male",
-      "Male",
-      "Male",
-      "Male",
-      "Female"
+    "region": [
+      "Northern California",
+      "Northern California",
+      "Northern California",
+      "Northern California",
+      "Northern California"
     ],
     "weight": [
       160.0,
@@ -42,12 +28,26 @@
       200.0,
       125.0
     ],
-    "region": [
-      "Northern California",
-      "Northern California",
-      "Northern California",
-      "Northern California",
-      "Northern California"
+    "gender": [
+      "Male",
+      "Male",
+      "Male",
+      "Male",
+      "Female"
+    ],
+    "height": [
+      68.0,
+      77.0,
+      72.0,
+      72.0,
+      69.0
+    ],
+    "age": [
+      25.0,
+      32.0,
+      30.0,
+      32.0,
+      30.0
     ]
   },
   "athlete_strength_v2": {
@@ -58,47 +58,19 @@
       93,
       96
     ],
+    "region": [
+      "Northern California",
+      "Northern California",
+      "Northern California",
+      "Northern California",
+      "Northern California"
+    ],
     "bmi": [
       24.325259515570934,
       26.678191937932198,
       27.121913580246915,
       27.121913580246915,
       18.457256878806973
-    ],
-    "age": [
-      25.0,
-      32.0,
-      30.0,
-      32.0,
-      30.0
-    ],
-    "height": [
-      68.0,
-      77.0,
-      72.0,
-      72.0,
-      69.0
-    ],
-    "gender": [
-      "Male",
-      "Male",
-      "Male",
-      "Male",
-      "Female"
-    ],
-    "weight": [
-      160.0,
-      225.0,
-      200.0,
-      200.0,
-      125.0
-    ],
-    "age_squared": [
-      625.0,
-      1024.0,
-      900.0,
-      1024.0,
-      900.0
     ],
     "weight_height_ratio": [
       2.3529411764705883,
@@ -107,12 +79,40 @@
       2.7777777777777777,
       1.8115942028985508
     ],
-    "region": [
-      "Northern California",
-      "Northern California",
-      "Northern California",
-      "Northern California",
-      "Northern California"
+    "age_squared": [
+      625.0,
+      1024.0,
+      900.0,
+      1024.0,
+      900.0
+    ],
+    "weight": [
+      160.0,
+      225.0,
+      200.0,
+      200.0,
+      125.0
+    ],
+    "gender": [
+      "Male",
+      "Male",
+      "Male",
+      "Male",
+      "Female"
+    ],
+    "height": [
+      68.0,
+      77.0,
+      72.0,
+      72.0,
+      69.0
+    ],
+    "age": [
+      25.0,
+      32.0,
+      30.0,
+      32.0,
+      30.0
     ]
   }
 }

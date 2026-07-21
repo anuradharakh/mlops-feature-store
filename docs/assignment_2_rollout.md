@@ -343,9 +343,61 @@ Completed.
 
 ---
 
-## Phase 7 — Feature Retrieval
+## Phase 7 — Reproducible Training Split
 
-To be completed.
+### Objective
+
+Prepare aligned versioned training datasets and create one deterministic
+train/test split that will be reused across all four experiments.
+
+### Training datasets
+
+The training datasets were generated through Feast historical retrieval:
+
+- `data/training/athlete_training_v1.parquet`
+- `data/training/athlete_training_v2.parquet`
+
+Both datasets contain the same athlete entities, event timestamps, and
+`total_lift` labels. Version 1 contains five model features, while Version 2
+contains eight.
+
+### Split strategy
+
+A single 80/20 train/test split was generated using:
+
+- Random state: `42`
+- Shuffling: enabled
+- Entity-level split key: `athlete_id`
+
+The split membership is persisted as:
+
+- `data/splits/athlete_split.parquet`
+
+This artifact will be reused for every experiment, ensuring that differences
+in model performance are attributable to feature versions or hyperparameter
+configurations rather than different evaluation populations.
+
+### Leakage prevention
+
+The source target components were explicitly prohibited from the training
+datasets:
+
+- `deadlift`
+- `candj`
+- `snatch`
+- `backsq`
+
+The only label available to the model pipeline is `total_lift`.
+
+### Generated evidence
+
+- `reports/validation/training_split_summary.json`
+- `reports/validation/training_dataset_missingness.csv`
+- `reports/figures/training_split_target_distribution.png`
+
+### Status
+
+Completed.
 
 ---
 

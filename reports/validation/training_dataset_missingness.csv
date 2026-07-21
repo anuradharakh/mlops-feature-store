@@ -1,0 +1,14 @@
+feature_version,feature,feature_type,missing_count,missing_percentage,unique_non_null_values
+v1,age,numerical,3,0.0,44
+v1,weight,numerical,7823,9.57,302
+v1,height,numerical,4920,6.02,43
+v1,gender,categorical,0,0.0,3
+v1,region,categorical,18884,23.11,17
+v2,age,numerical,3,0.0,44
+v2,weight,numerical,7823,9.57,302
+v2,height,numerical,4920,6.02,43
+v2,gender,categorical,0,0.0,3
+v2,region,categorical,18884,23.11,17
+v2,bmi,numerical,11012,13.48,2866
+v2,age_squared,numerical,3,0.0,44
+v2,weight_height_ratio,numerical,11012,13.48,2638

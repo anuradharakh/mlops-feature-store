@@ -1,0 +1,85 @@
+{
+  "status": "PASS",
+  "entity_column": "athlete_id",
+  "timestamp_column": "event_timestamp",
+  "target_column": "total_lift",
+  "feature_versions": {
+    "v1": {
+      "feature_count": 5,
+      "features": [
+        "age",
+        "weight",
+        "height",
+        "gender",
+        "region"
+      ],
+      "row_count": 81707,
+      "train_rows": 65365,
+      "test_rows": 16342
+    },
+    "v2": {
+      "feature_count": 8,
+      "features": [
+        "age",
+        "weight",
+        "height",
+        "gender",
+        "region",
+        "bmi",
+        "age_squared",
+        "weight_height_ratio"
+      ],
+      "row_count": 81707,
+      "train_rows": 65365,
+      "test_rows": 16342
+    }
+  },
+  "version_alignment": {
+    "same_entity_population": true,
+    "same_timestamp_population": true,
+    "same_target_values": true
+  },
+  "split": {
+    "random_state": 42,
+    "test_size_requested": 0.2,
+    "shuffle": true,
+    "total_entities": 81707,
+    "train_entities": 65365,
+    "test_entities": 16342,
+    "actual_test_fraction": 0.200007,
+    "train_test_overlap": 0,
+    "complete_population_coverage": true,
+    "split_hash_sha256": "2b46e0b84ab9b9bd7a340566c6e2f67da7e494b34282054fe56a1e0f5334456e"
+  },
+  "target_statistics": {
+    "complete_dataset": {
+      "count": 81707,
+      "mean": 985.4552,
+      "median": 1000.0,
+      "standard_deviation": 279.7844,
+      "minimum": 8.0,
+      "maximum": 2367.0
+    },
+    "train": {
+      "count": 65365,
+      "mean": 985.4921,
+      "median": 1000.0,
+      "standard_deviation": 280.1124,
+      "minimum": 8.0,
+      "maximum": 2280.0
+    },
+    "test": {
+      "count": 16342,
+      "mean": 985.3075,
+      "median": 1001.5,
+      "standard_deviation": 278.4769,
+      "minimum": 8.0,
+      "maximum": 2367.0
+    }
+  },
+  "artifacts": {
+    "split_membership": "data/splits/athlete_split.parquet",
+    "missingness_report": "reports/validation/training_dataset_missingness.csv",
+    "target_distribution_figure": "reports/figures/training_split_target_distribution.png"
+  }
+}

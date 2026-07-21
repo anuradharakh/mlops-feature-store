@@ -228,3 +228,11 @@ activemq-data/
 
 # PyPI local configuration
 .pypirc
+
+# Assignment 2 training artifacts committed for TA review
+!data/training/
+!data/training/athlete_training_v1.parquet
+!data/training/athlete_training_v2.parquet
+
+!data/splits/
+!data/splits/athlete_split.parquet

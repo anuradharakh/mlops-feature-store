@@ -27,8 +27,8 @@
       "online": true,
       "tags": {
         "team": "athlete_mlops",
-        "feature_version": "v1",
-        "feature_group": "baseline"
+        "feature_group": "baseline",
+        "feature_version": "v1"
       }
     },
     {
@@ -49,10 +49,10 @@
       ],
       "online": true,
       "tags": {
-        "team": "athlete_mlops",
-        "feature_version": "v2",
         "parent_version": "v1",
-        "feature_group": "enhanced"
+        "team": "athlete_mlops",
+        "feature_group": "enhanced",
+        "feature_version": "v2"
       }
     }
   ],
@@ -60,15 +60,15 @@
     {
       "name": "athlete_strength_v1",
       "tags": {
-        "model_family": "random_forest",
-        "feature_version": "v1"
+        "feature_version": "v1",
+        "model_family": "random_forest"
       }
     },
     {
       "name": "athlete_strength_v2",
       "tags": {
-        "model_family": "random_forest",
-        "feature_version": "v2"
+        "feature_version": "v2",
+        "model_family": "random_forest"
       }
     }
   ],
