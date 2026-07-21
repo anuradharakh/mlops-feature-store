@@ -403,8 +403,56 @@ Completed.
 
 ## Phase 8 — Scikit-learn Model Pipeline
 
-To be completed.
+## Phase 8 — Scikit-learn Model Pipeline
 
+### Objective
+
+Build one reusable Scikit-learn pipeline that can be applied consistently
+across both feature versions and both hyperparameter configurations.
+
+### Preprocessing
+
+Numerical features use median imputation. Categorical features use
+most-frequent imputation followed by one-hot encoding.
+
+All preprocessing components are contained within the fitted Scikit-learn
+pipeline. The pipeline is fitted only on the training partition, preventing
+test-set information from influencing imputation statistics or category
+discovery.
+
+Unknown categorical values are ignored during transformation so that
+previously unseen test or serving values do not cause prediction failures.
+
+### Estimator
+
+The selected algorithm is `RandomForestRegressor`.
+
+Two manually configured hyperparameter sets are defined:
+
+- `hp1`: 100 estimators, maximum depth 12, minimum leaf size 5
+- `hp2`: 300 estimators, maximum depth 20, minimum leaf size 2
+
+No automated hyperparameter tuning or AutoML is used.
+
+### Smoke test
+
+A deterministic subset of 10,000 training records and 2,500 test records was
+used to validate the complete model pipeline before experiment tracking.
+
+The smoke test is an infrastructure check and is not counted as one of the
+four official experiments.
+
+### Generated evidence
+
+- `reports/validation/model_pipeline_smoke_summary.json`
+- `reports/validation/model_pipeline_smoke_predictions.csv`
+- `reports/validation/model_pipeline_smoke_feature_importance.csv`
+- `reports/validation/model_pipeline_structure.txt`
+- `reports/figures/model_pipeline_smoke_actual_vs_predicted.png`
+
+### Status
+
+Completed.
 ---
 
 ## Phase 9 — MLflow Experiment Tracking

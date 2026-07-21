@@ -1,0 +1,76 @@
+{
+  "status": "PASS",
+  "run_type": "pipeline_smoke_test",
+  "official_experiment": false,
+  "purpose": "Validate preprocessing, fitting, prediction, and metric calculation before MLflow experiments.",
+  "scikit_learn_version": "1.9.0",
+  "algorithm": "RandomForestRegressor",
+  "feature_version": "v1",
+  "feature_view_name": "athlete_features_v1",
+  "source_features": [
+    "age",
+    "weight",
+    "height",
+    "gender",
+    "region"
+  ],
+  "numerical_features": [
+    "age",
+    "weight",
+    "height"
+  ],
+  "categorical_features": [
+    "gender",
+    "region"
+  ],
+  "source_feature_count": 5,
+  "transformed_feature_count": 22,
+  "transformed_feature_names": [
+    "numerical__age",
+    "numerical__weight",
+    "numerical__height",
+    "categorical__gender_Female",
+    "categorical__gender_Male",
+    "categorical__region_Africa",
+    "categorical__region_Asia",
+    "categorical__region_Australia",
+    "categorical__region_Canada East",
+    "categorical__region_Canada West",
+    "categorical__region_Central East",
+    "categorical__region_Europe",
+    "categorical__region_Latin America",
+    "categorical__region_Mid Atlantic",
+    "categorical__region_North Central",
+    "categorical__region_North East",
+    "categorical__region_North West",
+    "categorical__region_Northern California",
+    "categorical__region_South Central",
+    "categorical__region_South East",
+    "categorical__region_South West",
+    "categorical__region_Southern California"
+  ],
+  "hyperparameter_set": "hp1",
+  "hyperparameters": {
+    "n_estimators": 100,
+    "max_depth": 12,
+    "min_samples_split": 2,
+    "min_samples_leaf": 5,
+    "max_features": "sqrt",
+    "bootstrap": true
+  },
+  "hyperparameter_description": "Conservative baseline forest",
+  "full_training_rows": 65365,
+  "full_test_rows": 16342,
+  "smoke_training_rows": 10000,
+  "smoke_test_rows": 2500,
+  "metrics": {
+    "train_rmse": 158.630877,
+    "train_mae": 121.829287,
+    "train_r2": 0.676688,
+    "test_rmse": 169.463729,
+    "test_mae": 131.179447,
+    "test_r2": 0.620099,
+    "training_seconds": 0.095846,
+    "prediction_seconds": 0.036408
+  }
+}

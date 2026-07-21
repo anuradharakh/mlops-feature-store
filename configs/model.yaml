@@ -18,8 +18,52 @@ split:
   random_state: 42
   shuffle: true
 
+model:
+  algorithm: RandomForestRegressor
+  random_state: 42
+  n_jobs: -1
+  criterion: squared_error
+
+  preprocessing:
+    numerical_imputer_strategy: median
+    categorical_imputer_strategy: most_frequent
+    one_hot_handle_unknown: ignore
+    one_hot_sparse_output: false
+
+  hyperparameter_sets:
+    hp1:
+      description: Conservative baseline forest
+      n_estimators: 100
+      max_depth: 12
+      min_samples_split: 2
+      min_samples_leaf: 5
+      max_features: sqrt
+      bootstrap: true
+
+    hp2:
+      description: Larger and more flexible forest
+      n_estimators: 300
+      max_depth: 20
+      min_samples_split: 2
+      min_samples_leaf: 2
+      max_features: 1.0
+      bootstrap: true
+
+smoke_test:
+  feature_version: v1
+  hyperparameter_set: hp1
+  max_train_rows: 10000
+  max_test_rows: 2500
+  random_state: 42
+
 artifacts:
   split_membership: data/splits/athlete_split.parquet
   split_summary: reports/validation/training_split_summary.json
   missingness_report: reports/validation/training_dataset_missingness.csv
   target_distribution_figure: reports/figures/training_split_target_distribution.png
+
+  model_smoke_summary: reports/validation/model_pipeline_smoke_summary.json
+  model_smoke_predictions: reports/validation/model_pipeline_smoke_predictions.csv
+  model_smoke_feature_importance: reports/validation/model_pipeline_smoke_feature_importance.csv
+  model_smoke_structure: reports/validation/model_pipeline_structure.txt
+  model_smoke_figure: reports/figures/model_pipeline_smoke_actual_vs_predicted.png
