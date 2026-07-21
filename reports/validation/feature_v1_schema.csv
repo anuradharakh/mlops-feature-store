@@ -1,0 +1,8 @@
+column,data_type,nullable,unique_non_null_values
+athlete_id,int64,False,81707
+event_timestamp,"datetime64[ns, UTC]",False,81707
+age,float64,True,44
+weight,float64,True,302
+height,float64,True,43
+gender,string,False,3
+region,string,True,17

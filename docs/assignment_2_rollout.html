@@ -204,7 +204,51 @@ records being excluded from label construction.</p>
 valid beginner-athlete records.</p>
 <hr />
 <h2 id="phase-4-feature-version-1">Phase 4 — Feature Version 1</h2>
-<p>To be completed.</p>
+<h3 id="objective_3">Objective</h3>
+<p>Create a stable baseline feature version for athlete-strength modeling and
+prepare it as the offline source for later Feast registration.</p>
+<h3 id="feature-definition">Feature definition</h3>
+<p>Feature Version 1 contains:</p>
+<ul>
+<li><code>age</code></li>
+<li><code>weight</code></li>
+<li><code>height</code></li>
+<li><code>gender</code></li>
+<li><code>region</code></li>
+</ul>
+<p>The table also contains the Feast-required entity and timestamp fields:</p>
+<ul>
+<li><code>athlete_id</code></li>
+<li><code>event_timestamp</code></li>
+</ul>
+<h3 id="design-rationale">Design rationale</h3>
+<p>Version 1 intentionally uses a small, interpretable set of demographic and
+physical features. Higher-cardinality survey responses are excluded from the
+baseline and will be normalized or engineered in Feature Version 2.</p>
+<p>Missing predictor values are preserved. Imputation and encoding are deferred
+to the Scikit-learn training pipeline so that those transformations are fitted
+only on the training partition.</p>
+<h3 id="leakage-prevention">Leakage prevention</h3>
+<p>The following target-related columns are explicitly prohibited:</p>
+<ul>
+<li><code>total_lift</code></li>
+<li><code>deadlift</code></li>
+<li><code>candj</code></li>
+<li><code>snatch</code></li>
+<li><code>backsq</code></li>
+</ul>
+<h3 id="generated-artifacts_1">Generated artifacts</h3>
+<ul>
+<li><code>data/features/v1/athlete_features_v1.parquet</code></li>
+<li><code>reports/validation/feature_v1_manifest.json</code></li>
+<li><code>reports/validation/feature_v1_missingness.csv</code></li>
+<li><code>reports/validation/feature_v1_schema.csv</code></li>
+</ul>
+<h3 id="version-evidence">Version evidence</h3>
+<p>The Version 1 manifest records the feature list, data types, entity count,
+missing-value counts, schema hash, and deterministic feature-data hash.</p>
+<h3 id="status_2">Status</h3>
+<p>Completed.</p>
 <hr />
 <h2 id="phase-5-feature-version-2">Phase 5 — Feature Version 2</h2>
 <p>To be completed.</p>

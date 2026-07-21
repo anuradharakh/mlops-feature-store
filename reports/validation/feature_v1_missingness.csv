@@ -1,11 +1,6 @@
-,missing_count,missing_percentage,unique_non_null_values
-eat,30246,37.0,43
-schedule,27981,34.23,127
-background,27967,34.21,37
-experience,25003,30.59,73
-howlong,23368,28.59,29
-region,18899,23.12,17
-weight,7833,9.58,302
-height,4931,6.03,43
-age,3,0.0,44
-gender,0,0.0,3
+feature,feature_type,missing_count,missing_percentage,unique_non_null_values
+age,numerical,3,0.0,44
+weight,numerical,7823,9.57,302
+height,numerical,4920,6.02,43
+gender,categorical,0,0.0,3
+region,categorical,18884,23.11,17

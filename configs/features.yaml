@@ -1,0 +1,32 @@
+feature_versions:
+  v1:
+    name: athlete_features_v1
+    description: >
+      Stable baseline athlete features containing demographic and
+      physical attributes with limited cardinality.
+
+    entity_key: athlete_id
+    timestamp_column: event_timestamp
+
+    features:
+      - age
+      - weight
+      - height
+      - gender
+      - region
+
+    numerical_features:
+      - age
+      - weight
+      - height
+
+    categorical_features:
+      - gender
+      - region
+
+    target_leakage_columns:
+      - total_lift
+      - deadlift
+      - candj
+      - snatch
+      - backsq

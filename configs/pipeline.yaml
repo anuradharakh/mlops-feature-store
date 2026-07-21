@@ -8,6 +8,7 @@ paths:
   raw_data: data/raw/athletes.csv
   processed_data: data/processed/athletes_processed.parquet
   labels: data/processed/athlete_labels.parquet
+  feature_v1_data: data/features/v1/athlete_features_v1.parquet
   validation_reports: reports/validation
   figures: reports/figures
 

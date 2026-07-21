@@ -146,7 +146,61 @@ valid beginner-athlete records.
 
 ## Phase 4 — Feature Version 1
 
-To be completed.
+### Objective
+
+Create a stable baseline feature version for athlete-strength modeling and
+prepare it as the offline source for later Feast registration.
+
+### Feature definition
+
+Feature Version 1 contains:
+
+- `age`
+- `weight`
+- `height`
+- `gender`
+- `region`
+
+The table also contains the Feast-required entity and timestamp fields:
+
+- `athlete_id`
+- `event_timestamp`
+
+### Design rationale
+
+Version 1 intentionally uses a small, interpretable set of demographic and
+physical features. Higher-cardinality survey responses are excluded from the
+baseline and will be normalized or engineered in Feature Version 2.
+
+Missing predictor values are preserved. Imputation and encoding are deferred
+to the Scikit-learn training pipeline so that those transformations are fitted
+only on the training partition.
+
+### Leakage prevention
+
+The following target-related columns are explicitly prohibited:
+
+- `total_lift`
+- `deadlift`
+- `candj`
+- `snatch`
+- `backsq`
+
+### Generated artifacts
+
+- `data/features/v1/athlete_features_v1.parquet`
+- `reports/validation/feature_v1_manifest.json`
+- `reports/validation/feature_v1_missingness.csv`
+- `reports/validation/feature_v1_schema.csv`
+
+### Version evidence
+
+The Version 1 manifest records the feature list, data types, entity count,
+missing-value counts, schema hash, and deterministic feature-data hash.
+
+### Status
+
+Completed.
 
 ---
 

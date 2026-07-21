@@ -1,0 +1,37 @@
+{
+  "feature_version": "v1",
+  "feature_view_name": "athlete_features_v1",
+  "description": "Stable baseline athlete features containing demographic and physical attributes with limited cardinality.",
+  "entity_key": "athlete_id",
+  "timestamp_column": "event_timestamp",
+  "features": [
+    "age",
+    "weight",
+    "height",
+    "gender",
+    "region"
+  ],
+  "numerical_features": [
+    "age",
+    "weight",
+    "height"
+  ],
+  "categorical_features": [
+    "gender",
+    "region"
+  ],
+  "feature_count": 5,
+  "row_count": 81707,
+  "entity_count": 81707,
+  "duplicate_entity_count": 0,
+  "missing_feature_values": 31630,
+  "schema_hash_sha256": "e748122d10edbbbab62679f802ddfdb22b0b713ea64ae79b47a6d4d3df3e1d1d",
+  "data_hash_sha256": "69d28f4fa6883a7335db8cd93d7933d59d394fb66cffa561f80815cea84fa5fc",
+  "target_leakage_columns_excluded": [
+    "total_lift",
+    "deadlift",
+    "candj",
+    "snatch",
+    "backsq"
+  ]
+}
